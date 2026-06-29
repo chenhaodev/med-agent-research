@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Report — Live (API-backed)</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F766E'/%3E%3Ccircle cx='12' cy='12' r='4.5' fill='none' stroke='%23FBFAF8' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* Demo-only chrome layered over the shared report styles. */
+  .demo-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+    max-width:760px; margin:18px auto 0; padding:0 24px; }
+  .demo-bar input { flex:1; min-width:240px; font:inherit; padding:10px 14px;
+    border:1px solid var(--line); border-radius:10px; }
+  .demo-bar button { font:inherit; font-weight:600; padding:10px 18px; border:none;
+    border-radius:10px; background:var(--accent); color:#fff; cursor:pointer; }
+  .demo-status { max-width:760px; margin:12px auto 0; padding:0 24px; font:13px/1.5 'IBM Plex Mono',monospace;
+    color:#6B6B63; display:flex; align-items:center; gap:10px; }
+  .demo-status__bar { flex:1; height:6px; background:var(--line-soft); border-radius:4px; overflow:hidden; }
+  .demo-status__fill { height:100%; width:0; background:var(--accent); transition:width .2s ease; }
+  .demo-meta { max-width:760px; margin:6px auto 0; padding:0 24px; font:12px 'IBM Plex Mono',monospace; color:#9A9A93; }
+</style>
+</head>
+<body>
+
+<div id="rr-root">
+  <header class="rr-header">
+    <div class="rr-header__inner">
+      <div class="rr-brand">
+        <div class="rr-brand__mark"><div class="rr-brand__dot"></div></div>
+        <span class="rr-brand__name">Corpus</span>
+        <span class="rr-tag">Live</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="demo-bar">
+    <input id="demo-q" type="search" placeholder="Ask a research question…"
+      value="effectiveness of mobile health interventions">
+    <button id="demo-go" type="button">Generate</button>
+  </div>
+  <div class="demo-status">
+    <span id="demo-phase">idle</span>
+    <span class="demo-status__bar"><span id="demo-fill" class="demo-status__fill"></span></span>
+  </div>
+  <div class="demo-meta" id="demo-meta"></div>
+
+  <div class="rr-grid">
+    <main class="rr-reading" id="rr-reading" style="grid-column:1 / -1;">
+      <div id="rr-title"></div>
+      <div id="rr-blocks"></div>
+      <section id="sec-references" class="rr-refs" hidden>
+        <div class="rr-refs__head"><h2 class="rr-refs__title">References</h2><span class="rr-refs__count" id="rr-refcount">0</span></div>
+        <div class="rr-refs__list" id="rr-refs-list"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  var api = new CorpusApi({ baseUrl: params.get('api') || undefined });
+
+  var els = {
+    q: document.getElementById('demo-q'),
+    go: document.getElementById('demo-go'),
+    phase: document.getElementById('demo-phase'),
+    fill: document.getElementById('demo-fill'),
+    meta: document.getElementById('demo-meta'),
+    title: document.getElementById('rr-title'),
+    blocks: document.getElementById('rr-blocks'),
+    refs: document.getElementById('sec-references'),
+    refsList: document.getElementById('rr-refs-list'),
+    refCount: document.getElementById('rr-refcount')
+  };
+
+  function setStatus(phase, progress) {
+    els.phase.textContent = phase;
+    els.fill.style.width = Math.round((progress || 0) * 100) + '%';
+  }
+
+  function renderTitle(report) {
+    els.title.innerHTML =
+      '<div class="rr-kicker"><span class="rr-kicker__accent">Synthesis Report</span><span>·</span>' +
+      '<span>Generated ' + new Date(report.generatedAt).toLocaleDateString('en', { month: 'short', year: 'numeric' }) +
+      '</span><span>·</span><span>~' + report.readingTimeMin + ' min read</span></div>' +
+      '<h1 class="rr-title">What does the current evidence say about <span class="rr-title__accent">' +
+      report.topic + '</span>?</h1>' +
+      '<div class="rr-chips"><span class="rr-chip"><span class="rr-chip__dot"></span>' + report.consensus.label +
+      '</span><span class="rr-chip">' + report.metrics.contributingStudies + ' contributing studies</span>' +
+      (report.cadence === 'weekly' ? '<span class="rr-chip">Updated weekly</span>' : '') + '</div>';
+  }
+
+  function appendBlock(block) {
+    var html = CorpusRender.block(block);
+    if (!html) return; // unknown block type -> skipped, no crash
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    while (wrap.firstChild) els.blocks.appendChild(wrap.firstChild);
+  }
+
+  function renderRefs(refs) {
+    els.refsList.innerHTML = refs.map(CorpusRender.reference).join('');
+    els.refCount.textContent = refs.length;
+    els.refs.hidden = false;
+    wireCitations();
+  }
+
+  /* Native-title hover for inline citation markers added during streaming. */
+  function wireCitations() {
+    [].slice.call(document.querySelectorAll('.rr-cite[data-title]')).forEach(function (c) {
+      if (!c.getAttribute('title')) {
+        c.setAttribute('title', (c.getAttribute('data-meter') || '') + ' — ' + c.getAttribute('data-title'));
+      }
+    });
+  }
+
+  function generate() {
+    els.go.disabled = true;
+    els.blocks.innerHTML = '';
+    els.title.innerHTML = '';
+    els.refs.hidden = true;
+    setStatus('queued', 0.02);
+
+    var query = { question: els.q.value.trim(), mode: 'keyword', filters: {} };
+
+    api.createReport(query)
+      .then(function (job) {
+        return api.getReport(job.reportId).then(function (shell) {
+          renderTitle(shell);
+          return job.reportId;
+        });
+      })
+      .then(function (reportId) {
+        api.streamReport(reportId, {
+          status: function (d) { setStatus(d.phase, d.progress); },
+          block: function (d) { appendBlock(d.block); wireCitations(); },
+          references: function (d) { renderRefs(d.added); },
+          done: function (d) {
+            setStatus('complete', 1);
+            els.go.disabled = false;
+            els.meta.textContent = 'reportId ' + d.report.id + ' · ' + d.report.blocks.length +
+              ' blocks · ' + d.report.references.length + ' references · corpus ' + d.report.metrics.corpusSize;
+          },
+          error: function (e) {
+            setStatus('error: ' + (e.message || e.code), 1);
+            els.go.disabled = false;
+          }
+        });
+      })
+      .catch(function (e) {
+        setStatus('error: ' + e.message, 1);
+        els.go.disabled = false;
+      });
+  }
+
+  els.go.addEventListener('click', generate);
+
+  // Surface the facet catalog (proves /facets), then auto-run once.
+  api.getFacets().then(function (f) {
+    els.meta.textContent = f.fieldsOfStudy.length + ' fields · ' + f.countries.length + ' countries · ' +
+      f.sources.length + ' sources';
+  }).catch(function (e) {
+    els.meta.textContent = 'facets unavailable: ' + e.message;
+  });
+
+  if (params.get('autorun') !== '0') generate();
+})();
+</script>
+</body>
+</html>

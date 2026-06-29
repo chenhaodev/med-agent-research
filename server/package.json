@@ -1,0 +1,21 @@
+{
+  "name": "corpus-mock-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Runnable mock backend for the Corpus research-synthesis frontend",
+  "scripts": {
+    "mock": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "fastify": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

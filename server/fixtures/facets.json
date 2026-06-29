@@ -1,0 +1,1156 @@
+{
+  "fieldsOfStudy": [
+    {
+      "id": "medicine",
+      "label": "Medicine"
+    },
+    {
+      "id": "computer-science",
+      "label": "Computer Science"
+    },
+    {
+      "id": "psychology",
+      "label": "Psychology"
+    },
+    {
+      "id": "biology",
+      "label": "Biology"
+    },
+    {
+      "id": "engineering",
+      "label": "Engineering"
+    },
+    {
+      "id": "economics",
+      "label": "Economics"
+    },
+    {
+      "id": "sociology",
+      "label": "Sociology"
+    },
+    {
+      "id": "neuroscience",
+      "label": "Neuroscience"
+    },
+    {
+      "id": "public-health",
+      "label": "Public Health"
+    },
+    {
+      "id": "nursing",
+      "label": "Nursing"
+    },
+    {
+      "id": "pharmacology",
+      "label": "Pharmacology"
+    },
+    {
+      "id": "genetics",
+      "label": "Genetics"
+    },
+    {
+      "id": "immunology",
+      "label": "Immunology"
+    },
+    {
+      "id": "oncology",
+      "label": "Oncology"
+    },
+    {
+      "id": "cardiology",
+      "label": "Cardiology"
+    },
+    {
+      "id": "epidemiology",
+      "label": "Epidemiology"
+    },
+    {
+      "id": "statistics",
+      "label": "Statistics"
+    },
+    {
+      "id": "education",
+      "label": "Education"
+    },
+    {
+      "id": "environmental-science",
+      "label": "Environmental Science"
+    },
+    {
+      "id": "materials-science",
+      "label": "Materials Science"
+    },
+    {
+      "id": "physics",
+      "label": "Physics"
+    },
+    {
+      "id": "chemistry",
+      "label": "Chemistry"
+    },
+    {
+      "id": "mathematics",
+      "label": "Mathematics"
+    }
+  ],
+  "countries": [
+    {
+      "id": "af",
+      "label": "Afghanistan"
+    },
+    {
+      "id": "al",
+      "label": "Albania"
+    },
+    {
+      "id": "dz",
+      "label": "Algeria"
+    },
+    {
+      "id": "as",
+      "label": "American Samoa"
+    },
+    {
+      "id": "ad",
+      "label": "Andorra"
+    },
+    {
+      "id": "ao",
+      "label": "Angola"
+    },
+    {
+      "id": "ai",
+      "label": "Anguilla"
+    },
+    {
+      "id": "aq",
+      "label": "Antarctica"
+    },
+    {
+      "id": "ag",
+      "label": "Antigua & Barbuda"
+    },
+    {
+      "id": "ar",
+      "label": "Argentina"
+    },
+    {
+      "id": "am",
+      "label": "Armenia"
+    },
+    {
+      "id": "aw",
+      "label": "Aruba"
+    },
+    {
+      "id": "ac",
+      "label": "Ascension Island"
+    },
+    {
+      "id": "au",
+      "label": "Australia"
+    },
+    {
+      "id": "at",
+      "label": "Austria"
+    },
+    {
+      "id": "az",
+      "label": "Azerbaijan"
+    },
+    {
+      "id": "bs",
+      "label": "Bahamas"
+    },
+    {
+      "id": "bh",
+      "label": "Bahrain"
+    },
+    {
+      "id": "bd",
+      "label": "Bangladesh"
+    },
+    {
+      "id": "bb",
+      "label": "Barbados"
+    },
+    {
+      "id": "by",
+      "label": "Belarus"
+    },
+    {
+      "id": "be",
+      "label": "Belgium"
+    },
+    {
+      "id": "bz",
+      "label": "Belize"
+    },
+    {
+      "id": "bj",
+      "label": "Benin"
+    },
+    {
+      "id": "dy",
+      "label": "Benin"
+    },
+    {
+      "id": "bm",
+      "label": "Bermuda"
+    },
+    {
+      "id": "bt",
+      "label": "Bhutan"
+    },
+    {
+      "id": "bo",
+      "label": "Bolivia"
+    },
+    {
+      "id": "ba",
+      "label": "Bosnia & Herzegovina"
+    },
+    {
+      "id": "bw",
+      "label": "Botswana"
+    },
+    {
+      "id": "bv",
+      "label": "Bouvet Island"
+    },
+    {
+      "id": "br",
+      "label": "Brazil"
+    },
+    {
+      "id": "io",
+      "label": "British Indian Ocean Territory"
+    },
+    {
+      "id": "vg",
+      "label": "British Virgin Islands"
+    },
+    {
+      "id": "bn",
+      "label": "Brunei"
+    },
+    {
+      "id": "bg",
+      "label": "Bulgaria"
+    },
+    {
+      "id": "bf",
+      "label": "Burkina Faso"
+    },
+    {
+      "id": "hv",
+      "label": "Burkina Faso"
+    },
+    {
+      "id": "bi",
+      "label": "Burundi"
+    },
+    {
+      "id": "kh",
+      "label": "Cambodia"
+    },
+    {
+      "id": "cm",
+      "label": "Cameroon"
+    },
+    {
+      "id": "ca",
+      "label": "Canada"
+    },
+    {
+      "id": "ic",
+      "label": "Canary Islands"
+    },
+    {
+      "id": "cv",
+      "label": "Cape Verde"
+    },
+    {
+      "id": "bq",
+      "label": "Caribbean Netherlands"
+    },
+    {
+      "id": "ky",
+      "label": "Cayman Islands"
+    },
+    {
+      "id": "cf",
+      "label": "Central African Republic"
+    },
+    {
+      "id": "ea",
+      "label": "Ceuta & Melilla"
+    },
+    {
+      "id": "td",
+      "label": "Chad"
+    },
+    {
+      "id": "cl",
+      "label": "Chile"
+    },
+    {
+      "id": "cn",
+      "label": "China"
+    },
+    {
+      "id": "cx",
+      "label": "Christmas Island"
+    },
+    {
+      "id": "cp",
+      "label": "Clipperton Island"
+    },
+    {
+      "id": "cc",
+      "label": "Cocos (Keeling) Islands"
+    },
+    {
+      "id": "co",
+      "label": "Colombia"
+    },
+    {
+      "id": "km",
+      "label": "Comoros"
+    },
+    {
+      "id": "cg",
+      "label": "Congo - Brazzaville"
+    },
+    {
+      "id": "cd",
+      "label": "Congo - Kinshasa"
+    },
+    {
+      "id": "zr",
+      "label": "Congo - Kinshasa"
+    },
+    {
+      "id": "ck",
+      "label": "Cook Islands"
+    },
+    {
+      "id": "cr",
+      "label": "Costa Rica"
+    },
+    {
+      "id": "ci",
+      "label": "Côte d’Ivoire"
+    },
+    {
+      "id": "hr",
+      "label": "Croatia"
+    },
+    {
+      "id": "cu",
+      "label": "Cuba"
+    },
+    {
+      "id": "an",
+      "label": "Curaçao"
+    },
+    {
+      "id": "cw",
+      "label": "Curaçao"
+    },
+    {
+      "id": "cy",
+      "label": "Cyprus"
+    },
+    {
+      "id": "cz",
+      "label": "Czechia"
+    },
+    {
+      "id": "dk",
+      "label": "Denmark"
+    },
+    {
+      "id": "dg",
+      "label": "Diego Garcia"
+    },
+    {
+      "id": "dj",
+      "label": "Djibouti"
+    },
+    {
+      "id": "dm",
+      "label": "Dominica"
+    },
+    {
+      "id": "do",
+      "label": "Dominican Republic"
+    },
+    {
+      "id": "ec",
+      "label": "Ecuador"
+    },
+    {
+      "id": "eg",
+      "label": "Egypt"
+    },
+    {
+      "id": "sv",
+      "label": "El Salvador"
+    },
+    {
+      "id": "gq",
+      "label": "Equatorial Guinea"
+    },
+    {
+      "id": "er",
+      "label": "Eritrea"
+    },
+    {
+      "id": "ee",
+      "label": "Estonia"
+    },
+    {
+      "id": "sz",
+      "label": "Eswatini"
+    },
+    {
+      "id": "et",
+      "label": "Ethiopia"
+    },
+    {
+      "id": "eu",
+      "label": "European Union"
+    },
+    {
+      "id": "ez",
+      "label": "Eurozone"
+    },
+    {
+      "id": "fk",
+      "label": "Falkland Islands"
+    },
+    {
+      "id": "fo",
+      "label": "Faroe Islands"
+    },
+    {
+      "id": "fj",
+      "label": "Fiji"
+    },
+    {
+      "id": "fi",
+      "label": "Finland"
+    },
+    {
+      "id": "fr",
+      "label": "France"
+    },
+    {
+      "id": "fx",
+      "label": "France"
+    },
+    {
+      "id": "gf",
+      "label": "French Guiana"
+    },
+    {
+      "id": "pf",
+      "label": "French Polynesia"
+    },
+    {
+      "id": "tf",
+      "label": "French Southern Territories"
+    },
+    {
+      "id": "ga",
+      "label": "Gabon"
+    },
+    {
+      "id": "gm",
+      "label": "Gambia"
+    },
+    {
+      "id": "ge",
+      "label": "Georgia"
+    },
+    {
+      "id": "dd",
+      "label": "Germany"
+    },
+    {
+      "id": "de",
+      "label": "Germany"
+    },
+    {
+      "id": "gh",
+      "label": "Ghana"
+    },
+    {
+      "id": "gi",
+      "label": "Gibraltar"
+    },
+    {
+      "id": "gr",
+      "label": "Greece"
+    },
+    {
+      "id": "gl",
+      "label": "Greenland"
+    },
+    {
+      "id": "gd",
+      "label": "Grenada"
+    },
+    {
+      "id": "gp",
+      "label": "Guadeloupe"
+    },
+    {
+      "id": "gu",
+      "label": "Guam"
+    },
+    {
+      "id": "gt",
+      "label": "Guatemala"
+    },
+    {
+      "id": "gg",
+      "label": "Guernsey"
+    },
+    {
+      "id": "gn",
+      "label": "Guinea"
+    },
+    {
+      "id": "gw",
+      "label": "Guinea-Bissau"
+    },
+    {
+      "id": "gy",
+      "label": "Guyana"
+    },
+    {
+      "id": "ht",
+      "label": "Haiti"
+    },
+    {
+      "id": "hm",
+      "label": "Heard & McDonald Islands"
+    },
+    {
+      "id": "hn",
+      "label": "Honduras"
+    },
+    {
+      "id": "hk",
+      "label": "Hong Kong SAR China"
+    },
+    {
+      "id": "hu",
+      "label": "Hungary"
+    },
+    {
+      "id": "is",
+      "label": "Iceland"
+    },
+    {
+      "id": "in",
+      "label": "India"
+    },
+    {
+      "id": "id",
+      "label": "Indonesia"
+    },
+    {
+      "id": "ir",
+      "label": "Iran"
+    },
+    {
+      "id": "iq",
+      "label": "Iraq"
+    },
+    {
+      "id": "ie",
+      "label": "Ireland"
+    },
+    {
+      "id": "im",
+      "label": "Isle of Man"
+    },
+    {
+      "id": "il",
+      "label": "Israel"
+    },
+    {
+      "id": "it",
+      "label": "Italy"
+    },
+    {
+      "id": "jm",
+      "label": "Jamaica"
+    },
+    {
+      "id": "jp",
+      "label": "Japan"
+    },
+    {
+      "id": "je",
+      "label": "Jersey"
+    },
+    {
+      "id": "jo",
+      "label": "Jordan"
+    },
+    {
+      "id": "kz",
+      "label": "Kazakhstan"
+    },
+    {
+      "id": "ke",
+      "label": "Kenya"
+    },
+    {
+      "id": "ki",
+      "label": "Kiribati"
+    },
+    {
+      "id": "xk",
+      "label": "Kosovo"
+    },
+    {
+      "id": "kw",
+      "label": "Kuwait"
+    },
+    {
+      "id": "kg",
+      "label": "Kyrgyzstan"
+    },
+    {
+      "id": "la",
+      "label": "Laos"
+    },
+    {
+      "id": "lv",
+      "label": "Latvia"
+    },
+    {
+      "id": "lb",
+      "label": "Lebanon"
+    },
+    {
+      "id": "ls",
+      "label": "Lesotho"
+    },
+    {
+      "id": "lr",
+      "label": "Liberia"
+    },
+    {
+      "id": "ly",
+      "label": "Libya"
+    },
+    {
+      "id": "li",
+      "label": "Liechtenstein"
+    },
+    {
+      "id": "lt",
+      "label": "Lithuania"
+    },
+    {
+      "id": "lu",
+      "label": "Luxembourg"
+    },
+    {
+      "id": "mo",
+      "label": "Macao SAR China"
+    },
+    {
+      "id": "mg",
+      "label": "Madagascar"
+    },
+    {
+      "id": "mw",
+      "label": "Malawi"
+    },
+    {
+      "id": "my",
+      "label": "Malaysia"
+    },
+    {
+      "id": "mv",
+      "label": "Maldives"
+    },
+    {
+      "id": "ml",
+      "label": "Mali"
+    },
+    {
+      "id": "mt",
+      "label": "Malta"
+    },
+    {
+      "id": "mh",
+      "label": "Marshall Islands"
+    },
+    {
+      "id": "mq",
+      "label": "Martinique"
+    },
+    {
+      "id": "mr",
+      "label": "Mauritania"
+    },
+    {
+      "id": "mu",
+      "label": "Mauritius"
+    },
+    {
+      "id": "yt",
+      "label": "Mayotte"
+    },
+    {
+      "id": "mx",
+      "label": "Mexico"
+    },
+    {
+      "id": "fm",
+      "label": "Micronesia"
+    },
+    {
+      "id": "md",
+      "label": "Moldova"
+    },
+    {
+      "id": "mc",
+      "label": "Monaco"
+    },
+    {
+      "id": "mn",
+      "label": "Mongolia"
+    },
+    {
+      "id": "me",
+      "label": "Montenegro"
+    },
+    {
+      "id": "ms",
+      "label": "Montserrat"
+    },
+    {
+      "id": "ma",
+      "label": "Morocco"
+    },
+    {
+      "id": "mz",
+      "label": "Mozambique"
+    },
+    {
+      "id": "bu",
+      "label": "Myanmar (Burma)"
+    },
+    {
+      "id": "mm",
+      "label": "Myanmar (Burma)"
+    },
+    {
+      "id": "na",
+      "label": "Namibia"
+    },
+    {
+      "id": "nr",
+      "label": "Nauru"
+    },
+    {
+      "id": "np",
+      "label": "Nepal"
+    },
+    {
+      "id": "nl",
+      "label": "Netherlands"
+    },
+    {
+      "id": "nc",
+      "label": "New Caledonia"
+    },
+    {
+      "id": "nz",
+      "label": "New Zealand"
+    },
+    {
+      "id": "ni",
+      "label": "Nicaragua"
+    },
+    {
+      "id": "ne",
+      "label": "Niger"
+    },
+    {
+      "id": "ng",
+      "label": "Nigeria"
+    },
+    {
+      "id": "nu",
+      "label": "Niue"
+    },
+    {
+      "id": "nf",
+      "label": "Norfolk Island"
+    },
+    {
+      "id": "kp",
+      "label": "North Korea"
+    },
+    {
+      "id": "mk",
+      "label": "North Macedonia"
+    },
+    {
+      "id": "mp",
+      "label": "Northern Mariana Islands"
+    },
+    {
+      "id": "no",
+      "label": "Norway"
+    },
+    {
+      "id": "om",
+      "label": "Oman"
+    },
+    {
+      "id": "qo",
+      "label": "Outlying Oceania"
+    },
+    {
+      "id": "pk",
+      "label": "Pakistan"
+    },
+    {
+      "id": "pw",
+      "label": "Palau"
+    },
+    {
+      "id": "ps",
+      "label": "Palestinian Territories"
+    },
+    {
+      "id": "pa",
+      "label": "Panama"
+    },
+    {
+      "id": "pg",
+      "label": "Papua New Guinea"
+    },
+    {
+      "id": "py",
+      "label": "Paraguay"
+    },
+    {
+      "id": "pe",
+      "label": "Peru"
+    },
+    {
+      "id": "ph",
+      "label": "Philippines"
+    },
+    {
+      "id": "pn",
+      "label": "Pitcairn Islands"
+    },
+    {
+      "id": "pl",
+      "label": "Poland"
+    },
+    {
+      "id": "pt",
+      "label": "Portugal"
+    },
+    {
+      "id": "xa",
+      "label": "Pseudo-Accents"
+    },
+    {
+      "id": "xb",
+      "label": "Pseudo-Bidi"
+    },
+    {
+      "id": "pr",
+      "label": "Puerto Rico"
+    },
+    {
+      "id": "qa",
+      "label": "Qatar"
+    },
+    {
+      "id": "re",
+      "label": "Réunion"
+    },
+    {
+      "id": "ro",
+      "label": "Romania"
+    },
+    {
+      "id": "ru",
+      "label": "Russia"
+    },
+    {
+      "id": "su",
+      "label": "Russia"
+    },
+    {
+      "id": "rw",
+      "label": "Rwanda"
+    },
+    {
+      "id": "ws",
+      "label": "Samoa"
+    },
+    {
+      "id": "sm",
+      "label": "San Marino"
+    },
+    {
+      "id": "st",
+      "label": "São Tomé & Príncipe"
+    },
+    {
+      "id": "cq",
+      "label": "Sark"
+    },
+    {
+      "id": "sa",
+      "label": "Saudi Arabia"
+    },
+    {
+      "id": "sn",
+      "label": "Senegal"
+    },
+    {
+      "id": "cs",
+      "label": "Serbia"
+    },
+    {
+      "id": "rs",
+      "label": "Serbia"
+    },
+    {
+      "id": "yu",
+      "label": "Serbia"
+    },
+    {
+      "id": "sc",
+      "label": "Seychelles"
+    },
+    {
+      "id": "sl",
+      "label": "Sierra Leone"
+    },
+    {
+      "id": "sg",
+      "label": "Singapore"
+    },
+    {
+      "id": "sx",
+      "label": "Sint Maarten"
+    },
+    {
+      "id": "sk",
+      "label": "Slovakia"
+    },
+    {
+      "id": "si",
+      "label": "Slovenia"
+    },
+    {
+      "id": "sb",
+      "label": "Solomon Islands"
+    },
+    {
+      "id": "so",
+      "label": "Somalia"
+    },
+    {
+      "id": "za",
+      "label": "South Africa"
+    },
+    {
+      "id": "gs",
+      "label": "South Georgia & South Sandwich Islands"
+    },
+    {
+      "id": "kr",
+      "label": "South Korea"
+    },
+    {
+      "id": "ss",
+      "label": "South Sudan"
+    },
+    {
+      "id": "es",
+      "label": "Spain"
+    },
+    {
+      "id": "lk",
+      "label": "Sri Lanka"
+    },
+    {
+      "id": "bl",
+      "label": "St. Barthélemy"
+    },
+    {
+      "id": "sh",
+      "label": "St. Helena"
+    },
+    {
+      "id": "kn",
+      "label": "St. Kitts & Nevis"
+    },
+    {
+      "id": "lc",
+      "label": "St. Lucia"
+    },
+    {
+      "id": "mf",
+      "label": "St. Martin"
+    },
+    {
+      "id": "pm",
+      "label": "St. Pierre & Miquelon"
+    },
+    {
+      "id": "vc",
+      "label": "St. Vincent & Grenadines"
+    },
+    {
+      "id": "sd",
+      "label": "Sudan"
+    },
+    {
+      "id": "sr",
+      "label": "Suriname"
+    },
+    {
+      "id": "sj",
+      "label": "Svalbard & Jan Mayen"
+    },
+    {
+      "id": "se",
+      "label": "Sweden"
+    }
+  ],
+  "journalRanks": [
+    {
+      "id": "any",
+      "label": "Any (Q1–Q4)"
+    },
+    {
+      "id": "q1",
+      "label": "Q1 only"
+    },
+    {
+      "id": "q1-q2",
+      "label": "Q1–Q2"
+    },
+    {
+      "id": "q1-q3",
+      "label": "Q1–Q3"
+    }
+  ],
+  "sources": [
+    {
+      "id": "pubmed",
+      "label": "PubMed"
+    },
+    {
+      "id": "openalex",
+      "label": "OpenAlex"
+    },
+    {
+      "id": "semantic-scholar",
+      "label": "Semantic Scholar"
+    },
+    {
+      "id": "biorxiv",
+      "label": "bioRxiv"
+    },
+    {
+      "id": "medrxiv",
+      "label": "medRxiv"
+    },
+    {
+      "id": "arxiv",
+      "label": "arXiv"
+    },
+    {
+      "id": "crossref",
+      "label": "Crossref"
+    }
+  ],
+  "studyDesigns": [
+    {
+      "id": "rct",
+      "label": "Randomized controlled trial"
+    },
+    {
+      "id": "cohort",
+      "label": "Cohort"
+    },
+    {
+      "id": "review",
+      "label": "Review"
+    },
+    {
+      "id": "meta-analysis",
+      "label": "Meta-analysis"
+    },
+    {
+      "id": "observational",
+      "label": "Observational"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "yearPresets": [
+    {
+      "id": "any",
+      "label": "Any"
+    },
+    {
+      "id": "2y",
+      "label": "Past 2 yrs."
+    },
+    {
+      "id": "5y",
+      "label": "Past 5 yrs."
+    },
+    {
+      "id": "10y",
+      "label": "Past 10 yrs."
+    }
+  ],
+  "searchModes": [
+    {
+      "id": "methods",
+      "label": "Methods & techniques"
+    },
+    {
+      "id": "keyword",
+      "label": "Keyword search"
+    },
+    {
+      "id": "author",
+      "label": "Author search"
+    },
+    {
+      "id": "phrase",
+      "label": "Phrase"
+    },
+    {
+      "id": "title",
+      "label": "Title"
+    }
+  ]
+}

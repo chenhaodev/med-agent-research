@@ -1,0 +1,637 @@
+openapi: 3.1.0
+info:
+  title: Corpus API
+  version: "1.0.0"
+  description: >
+    Backend contract for the Corpus research-synthesis frontend. Powers the
+    Paper Search landing page and the Research Report synthesis document.
+    The TypeScript file `api/types.ts` is the source of truth; this spec mirrors
+    it. Report generation is an async job streamed over Server-Sent Events.
+servers:
+  - url: http://localhost:8787/api/v1
+    description: Local mock server
+tags:
+  - name: Facets
+  - name: Papers
+  - name: Reports
+  - name: SavedSearches
+  - name: History
+  - name: Collections
+  - name: Auth
+
+security:
+  - bearerAuth: []
+
+paths:
+  /facets:
+    get:
+      tags: [Facets]
+      summary: Catalogs that drive the filter drawer
+      security: []
+      responses:
+        "200":
+          description: Facet catalogs
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Facets" }
+
+  /papers:
+    get:
+      tags: [Papers]
+      summary: Literature search (cursor-paginated)
+      security: []
+      parameters:
+        - { name: query, in: query, schema: { type: string } }
+        - { name: mode, in: query, schema: { $ref: "#/components/schemas/SearchMode" } }
+        - { name: yearMin, in: query, schema: { type: integer } }
+        - { name: yearMax, in: query, schema: { type: integer } }
+        - { name: journalRank, in: query, schema: { $ref: "#/components/schemas/JournalRank" } }
+        - { name: minCitations, in: query, schema: { type: integer } }
+        - { name: excludePreprints, in: query, schema: { type: boolean } }
+        - { name: openAccess, in: query, schema: { type: boolean } }
+        - { name: fields, in: query, schema: { type: array, items: { type: string } }, style: form, explode: true }
+        - { name: sources, in: query, schema: { type: array, items: { type: string } }, style: form, explode: true }
+        - { name: countries, in: query, schema: { type: array, items: { type: string } }, style: form, explode: true }
+        - { name: studyDesigns, in: query, schema: { type: array, items: { $ref: "#/components/schemas/StudyDesign" } }, style: form, explode: true }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        "200":
+          description: A page of papers
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PaperPage" }
+
+  /papers/{id}:
+    get:
+      tags: [Papers]
+      summary: Fetch one paper
+      security: []
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Paper
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Paper" }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /reports:
+    get:
+      tags: [Reports]
+      summary: History of generated reports
+      responses:
+        "200":
+          description: Reports (newest first)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/SynthesisReport" } }
+                  nextCursor: { type: string }
+                  total: { type: integer }
+    post:
+      tags: [Reports]
+      summary: Start an async synthesis job
+      parameters:
+        - { name: Idempotency-Key, in: header, required: false, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateReportRequest" }
+      responses:
+        "202":
+          description: Job accepted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreateReportResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+
+  /reports/{id}:
+    get:
+      tags: [Reports]
+      summary: Fetch a report (partial while generating)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SynthesisReport" }
+        "404": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [Reports]
+      summary: Delete a report
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /reports/{id}/events:
+    get:
+      tags: [Reports]
+      summary: Stream report generation as Server-Sent Events
+      description: >
+        Returns `text/event-stream`. Emits, in order: `status(retrieving)`,
+        `funnel`, `status(screening)`, `meter`, one `block` per section,
+        `references`, then `done`. Each frame is `event: <name>` + `data: <json>`.
+        See `ReportEvent` in `api/types.ts` for payloads.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema: { type: string }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /saved-searches:
+    get:
+      tags: [SavedSearches]
+      summary: List saved searches
+      responses:
+        "200":
+          description: Saved searches
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/SavedSearch" } }
+    post:
+      tags: [SavedSearches]
+      summary: Save a search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, query]
+              properties:
+                name: { type: string }
+                query: { $ref: "#/components/schemas/ResearchQuery" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SavedSearch" }
+
+  /saved-searches/{id}:
+    delete:
+      tags: [SavedSearches]
+      summary: Delete a saved search
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /history:
+    get:
+      tags: [History]
+      summary: Recent search/report history
+      responses:
+        "200":
+          description: History entries (newest first)
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/HistoryEntry" } }
+
+  /collections:
+    get:
+      tags: [Collections]
+      summary: List collections
+      responses:
+        "200":
+          description: Collections
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Collection" } }
+    post:
+      tags: [Collections]
+      summary: Create a collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties: { name: { type: string } }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Collection" }
+
+  /collections/{id}:
+    get:
+      tags: [Collections]
+      summary: Fetch a collection
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        "200":
+          description: Collection
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Collection" }
+        "404": { $ref: "#/components/responses/Error" }
+    patch:
+      tags: [Collections]
+      summary: Rename a collection
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: { name: { type: string } }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Collection" }
+        "404": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [Collections]
+      summary: Delete a collection
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        "204": { description: Deleted }
+        "400": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /collections/{id}/items:
+    post:
+      tags: [Collections]
+      summary: Add an item to a collection
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ref]
+              properties:
+                ref: { $ref: "#/components/schemas/CollectionItemRef" }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Item added
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CollectionItem" }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /collections/{id}/items/{itemId}:
+    delete:
+      tags: [Collections]
+      summary: Remove an item from a collection
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: itemId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Removed }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Log in (mock issues a static token)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+      responses:
+        "200":
+          description: Token + user
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LoginResponse" }
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Log out
+      responses:
+        "204": { description: Logged out }
+
+  /me:
+    get:
+      tags: [Auth]
+      summary: Current user
+      responses:
+        "200":
+          description: User
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Error" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  responses:
+    Error:
+      description: Error envelope
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiErrorResponse" }
+
+  schemas:
+    Stance: { type: string, enum: [yes, possibly, mixed, no, na] }
+    Grade: { type: string, enum: [strong, moderate, weak, emerging, mixed] }
+    SearchMode: { type: string, enum: [phrase, keyword, title, author, methods] }
+    YearPreset: { type: string, enum: [any, 2y, 5y, 10y] }
+    JournalRank: { type: string, enum: [any, q1, q1-q2, q1-q3] }
+    Quartile: { type: string, enum: [Q1, Q2, Q3, Q4] }
+    StudyDesign:
+      type: string
+      enum: [rct, cohort, review, meta-analysis, observational, other]
+
+    QueryFilters:
+      type: object
+      properties:
+        yearPreset: { $ref: "#/components/schemas/YearPreset" }
+        yearMin: { type: integer }
+        yearMax: { type: integer }
+        journalRank: { $ref: "#/components/schemas/JournalRank" }
+        minCitations: { type: integer }
+        excludePreprints: { type: boolean }
+        openAccess: { type: boolean }
+        fields: { type: array, items: { type: string } }
+        sources: { type: array, items: { type: string } }
+        countries: { type: array, items: { type: string } }
+        studyDesigns: { type: array, items: { $ref: "#/components/schemas/StudyDesign" } }
+        sampleSizeMin: { type: integer }
+        followUpMonthsMin: { type: integer }
+
+    ResearchQuery:
+      type: object
+      required: [question, mode, filters]
+      properties:
+        question: { type: string }
+        mode: { $ref: "#/components/schemas/SearchMode" }
+        filters: { $ref: "#/components/schemas/QueryFilters" }
+
+    Paper:
+      type: object
+      required: [id, externalIds, title, authors, year, venue, isOpenAccess, isPreprint, fields, url, provider]
+      properties:
+        id: { type: string }
+        externalIds:
+          type: object
+          properties:
+            pmid: { type: string }
+            doi: { type: string }
+            openalex: { type: string }
+            semanticScholar: { type: string }
+            biorxiv: { type: string }
+        title: { type: string }
+        abstract: { type: string }
+        authors:
+          type: array
+          items:
+            type: object
+            required: [name]
+            properties:
+              name: { type: string }
+              affiliation: { type: string }
+              country: { type: string }
+        year: { type: integer }
+        date: { type: string }
+        venue:
+          type: object
+          required: [name, type]
+          properties:
+            name: { type: string }
+            type: { type: string, enum: [journal, preprint, conference] }
+            quartile: { $ref: "#/components/schemas/Quartile" }
+            issn: { type: string }
+        citationCount: { type: integer }
+        isOpenAccess: { type: boolean }
+        isPreprint: { type: boolean }
+        fields: { type: array, items: { type: string } }
+        country: { type: array, items: { type: string } }
+        studyDesign: { $ref: "#/components/schemas/StudyDesign" }
+        sampleSize: { type: integer }
+        followUpMonths: { type: integer }
+        url: { type: string }
+        pdfUrl: { type: string }
+        provider: { type: string }
+
+    PaperPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/Paper" } }
+        nextCursor: { type: string }
+        total: { type: integer }
+
+    Reference:
+      type: object
+      required: [id, number, type, authors, year, title, venue]
+      properties:
+        id: { type: string }
+        number: { type: integer }
+        type: { type: string, enum: [journal-article, preprint, review, meta-analysis] }
+        authors: { type: array, items: { type: string } }
+        year: { type: integer }
+        title: { type: string }
+        venue: { type: string }
+        volume: { type: string }
+        issue: { type: string }
+        pages: { type: string }
+        doi: { type: string }
+        url: { type: string }
+        openAccess: { type: boolean }
+        citationCount: { type: integer }
+
+    CitationRef:
+      type: object
+      required: [refId, number, stance]
+      properties:
+        refId: { type: string }
+        number: { type: integer }
+        stance: { $ref: "#/components/schemas/Stance" }
+        tooltip: { type: string }
+
+    ContentBlock:
+      description: >
+        Discriminated by `type`. Renderers switch on it and ignore unknown
+        types. See `api/types.ts` for the full per-type shape.
+      type: object
+      required: [type]
+      properties:
+        type: { type: string }
+      additionalProperties: true
+
+    SynthesisReport:
+      type: object
+      required: [id, query, status, version, generatedAt, updatedAt, topic, readingTimeMin, consensus, metrics, funnel, blocks, references]
+      properties:
+        id: { type: string }
+        query: { $ref: "#/components/schemas/ResearchQuery" }
+        status: { type: string, enum: [queued, running, complete, error] }
+        version: { type: integer }
+        generatedAt: { type: string }
+        updatedAt: { type: string }
+        cadence: { type: string, enum: [weekly, manual] }
+        topic: { type: string }
+        readingTimeMin: { type: integer }
+        consensus:
+          type: object
+          properties:
+            label: { type: string }
+            strength: { $ref: "#/components/schemas/Grade" }
+        metrics:
+          type: object
+          properties:
+            contributingStudies: { type: integer }
+            corpusSize: { type: integer }
+        funnel:
+          type: object
+          properties:
+            stages: { type: array, items: { $ref: "#/components/schemas/FunnelStage" } }
+        blocks: { type: array, items: { $ref: "#/components/schemas/ContentBlock" } }
+        references: { type: array, items: { $ref: "#/components/schemas/Reference" } }
+
+    FunnelStage:
+      type: object
+      required: [stage, label, count]
+      properties:
+        stage: { type: string }
+        label: { type: string }
+        count: { type: integer }
+
+    CreateReportRequest:
+      type: object
+      required: [query]
+      properties:
+        query: { $ref: "#/components/schemas/ResearchQuery" }
+        idempotencyKey: { type: string }
+
+    CreateReportResponse:
+      type: object
+      required: [reportId, jobId, status, statusUrl, eventsUrl]
+      properties:
+        reportId: { type: string }
+        jobId: { type: string }
+        status: { type: string, enum: [queued] }
+        statusUrl: { type: string }
+        eventsUrl: { type: string }
+
+    Facets:
+      type: object
+      properties:
+        fieldsOfStudy: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        countries: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        journalRanks: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        sources: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        studyDesigns: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        yearPresets: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+        searchModes: { type: array, items: { $ref: "#/components/schemas/FacetItem" } }
+
+    FacetItem:
+      type: object
+      required: [id, label]
+      properties:
+        id: { type: string }
+        label: { type: string }
+        count: { type: integer }
+
+    SavedSearch:
+      type: object
+      required: [id, name, query, createdAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        query: { $ref: "#/components/schemas/ResearchQuery" }
+        createdAt: { type: string }
+
+    HistoryEntry:
+      type: object
+      required: [id, query, ranAt]
+      properties:
+        id: { type: string }
+        query: { $ref: "#/components/schemas/ResearchQuery" }
+        reportId: { type: string }
+        ranAt: { type: string }
+
+    CollectionItemRef:
+      type: object
+      required: [kind, id]
+      properties:
+        kind: { type: string, enum: [paper, report] }
+        id: { type: string }
+
+    CollectionItem:
+      type: object
+      required: [id, ref, addedAt]
+      properties:
+        id: { type: string }
+        ref: { $ref: "#/components/schemas/CollectionItemRef" }
+        notes: { type: string }
+        addedAt: { type: string }
+
+    Collection:
+      type: object
+      required: [id, name, createdAt, updatedAt, items]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        system: { type: boolean }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+        items: { type: array, items: { $ref: "#/components/schemas/CollectionItem" } }
+
+    User:
+      type: object
+      required: [id, name, initials, email]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        initials: { type: string }
+        email: { type: string }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string }
+        password: { type: string }
+
+    LoginResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token: { type: string }
+        user: { $ref: "#/components/schemas/User" }
+
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
+        details: {}
+
+    ApiErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error: { $ref: "#/components/schemas/ApiError" }

@@ -1,0 +1,257 @@
+[
+  {
+    "id": "p-001",
+    "externalIds": { "pmid": "37000001", "doi": "10.1000/mhealth.2024.001", "openalex": "W4300000001" },
+    "title": "Effectiveness of mobile health interventions for chronic disease self-management: a systematic review and meta-analysis",
+    "abstract": "Pooled analysis of 42 randomized trials evaluating smartphone-delivered self-management support across diabetes, hypertension, and asthma.",
+    "authors": [
+      { "name": "Okafor, N.", "affiliation": "University of Toronto", "country": "Canada" },
+      { "name": "Larsson, M.", "affiliation": "Karolinska Institutet", "country": "Sweden" }
+    ],
+    "year": 2024,
+    "date": "2024-03-12",
+    "venue": { "name": "The Lancet Digital Health", "type": "journal", "quartile": "Q1", "issn": "2589-7500" },
+    "citationCount": 312,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["medicine", "public-health"],
+    "country": ["Canada", "Sweden"],
+    "studyDesign": "meta-analysis",
+    "sampleSize": 18420,
+    "followUpMonths": 12,
+    "url": "https://example.org/papers/p-001",
+    "pdfUrl": "https://example.org/papers/p-001.pdf",
+    "provider": "mock"
+  },
+  {
+    "id": "p-002",
+    "externalIds": { "doi": "10.1000/jmir.2023.114", "openalex": "W4300000002" },
+    "title": "Adaptive just-in-time interventions: a scoping review of decision rules and engagement outcomes",
+    "abstract": "Scoping review of adaptive intervention designs that adjust timing and intensity from real-time context signals.",
+    "authors": [
+      { "name": "Mehta, R.", "affiliation": "Indian Institute of Science", "country": "India" }
+    ],
+    "year": 2023,
+    "date": "2023-09-01",
+    "venue": { "name": "Journal of Medical Internet Research", "type": "journal", "quartile": "Q1", "issn": "1438-8871" },
+    "citationCount": 147,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["medicine", "computer-science"],
+    "country": ["India"],
+    "studyDesign": "review",
+    "url": "https://example.org/papers/p-002",
+    "provider": "mock"
+  },
+  {
+    "id": "p-003",
+    "externalIds": { "biorxiv": "2025.01.15.123456", "doi": "10.1101/2025.01.15.123456" },
+    "title": "On-device federated models for privacy-preserving symptom tracking",
+    "abstract": "Preprint demonstrating federated learning for symptom prediction without raw data leaving the device.",
+    "authors": [
+      { "name": "Zhang, W.", "affiliation": "Tsinghua University", "country": "China" },
+      { "name": "Ortega, L.", "affiliation": "Universidad de Buenos Aires", "country": "Argentina" }
+    ],
+    "year": 2025,
+    "date": "2025-01-15",
+    "venue": { "name": "bioRxiv", "type": "preprint" },
+    "citationCount": 8,
+    "isOpenAccess": true,
+    "isPreprint": true,
+    "fields": ["computer-science"],
+    "country": ["China", "Argentina"],
+    "studyDesign": "other",
+    "url": "https://example.org/papers/p-003",
+    "provider": "mock"
+  },
+  {
+    "id": "p-004",
+    "externalIds": { "pmid": "37000044", "doi": "10.1000/npjdigmed.2025.044" },
+    "title": "A large pragmatic trial of workflow-embedded clinical decision support",
+    "abstract": "Cluster-randomized pragmatic trial of decision support embedded in the electronic health record across 30 clinics.",
+    "authors": [
+      { "name": "Bauer, K.", "affiliation": "Charité Berlin", "country": "Germany" }
+    ],
+    "year": 2025,
+    "date": "2025-02-20",
+    "venue": { "name": "npj Digital Medicine", "type": "journal", "quartile": "Q1", "issn": "2398-6352" },
+    "citationCount": 56,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["medicine", "computer-science"],
+    "country": ["Germany"],
+    "studyDesign": "rct",
+    "sampleSize": 9100,
+    "followUpMonths": 18,
+    "url": "https://example.org/papers/p-004",
+    "provider": "mock"
+  },
+  {
+    "id": "p-005",
+    "externalIds": { "doi": "10.1000/circ.2022.205", "openalex": "W4300000005" },
+    "title": "Wearable-derived activity metrics and cardiovascular outcomes: a prospective cohort",
+    "abstract": "Five-year cohort linking consumer wearable activity data to incident cardiovascular events.",
+    "authors": [
+      { "name": "Nguyen, T.", "affiliation": "University of Melbourne", "country": "Australia" }
+    ],
+    "year": 2022,
+    "date": "2022-07-04",
+    "venue": { "name": "Circulation", "type": "journal", "quartile": "Q1", "issn": "0009-7322" },
+    "citationCount": 421,
+    "isOpenAccess": false,
+    "isPreprint": false,
+    "fields": ["medicine", "cardiology"],
+    "country": ["Australia"],
+    "studyDesign": "cohort",
+    "sampleSize": 24500,
+    "followUpMonths": 60,
+    "url": "https://example.org/papers/p-005",
+    "provider": "mock"
+  },
+  {
+    "id": "p-006",
+    "externalIds": { "doi": "10.1000/jamia.2021.066" },
+    "title": "Equity gaps in digital health adoption: a mixed-methods analysis",
+    "abstract": "Mixed-methods study of access, adoption, and adherence disparities across socioeconomic strata.",
+    "authors": [
+      { "name": "Silva, A.", "affiliation": "Universidade de São Paulo", "country": "Brazil" }
+    ],
+    "year": 2021,
+    "date": "2021-11-30",
+    "venue": { "name": "JAMIA", "type": "journal", "quartile": "Q2", "issn": "1067-5027" },
+    "citationCount": 203,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["public-health", "sociology"],
+    "country": ["Brazil"],
+    "studyDesign": "observational",
+    "sampleSize": 5400,
+    "url": "https://example.org/papers/p-006",
+    "provider": "mock"
+  },
+  {
+    "id": "p-007",
+    "externalIds": { "doi": "10.1000/umbrella.2023.077", "openalex": "W4300000007" },
+    "title": "Digital therapeutics: an umbrella review of reviews",
+    "abstract": "Umbrella review synthesizing 60 prior systematic reviews, flagging durability and equity as dominant open questions.",
+    "authors": [
+      { "name": "Haddad, S.", "affiliation": "American University of Beirut", "country": "Lebanon" }
+    ],
+    "year": 2023,
+    "date": "2023-05-18",
+    "venue": { "name": "BMJ", "type": "journal", "quartile": "Q1", "issn": "0959-8138" },
+    "citationCount": 188,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["medicine"],
+    "country": ["Lebanon"],
+    "studyDesign": "review",
+    "url": "https://example.org/papers/p-007",
+    "provider": "mock"
+  },
+  {
+    "id": "p-008",
+    "externalIds": { "arxiv": "2406.01234", "doi": "10.48550/arXiv.2406.01234" },
+    "title": "Benchmarking large language models for clinical note summarization",
+    "abstract": "Preprint evaluating LLM summarization quality and time savings in clinical documentation workflows.",
+    "authors": [
+      { "name": "Kim, J.", "affiliation": "Seoul National University", "country": "South Korea" }
+    ],
+    "year": 2024,
+    "date": "2024-06-03",
+    "venue": { "name": "arXiv", "type": "preprint" },
+    "citationCount": 34,
+    "isOpenAccess": true,
+    "isPreprint": true,
+    "fields": ["computer-science", "medicine"],
+    "country": ["South Korea"],
+    "studyDesign": "other",
+    "url": "https://example.org/papers/p-008",
+    "provider": "mock"
+  },
+  {
+    "id": "p-009",
+    "externalIds": { "pmid": "36000099", "doi": "10.1000/diabetescare.2022.099" },
+    "title": "Text-message coaching for glycemic control: a randomized controlled trial",
+    "abstract": "RCT of automated SMS coaching showing modest improvement in HbA1c at six months.",
+    "authors": [
+      { "name": "Abiodun, F.", "affiliation": "University of Ibadan", "country": "Nigeria" }
+    ],
+    "year": 2022,
+    "date": "2022-02-14",
+    "venue": { "name": "Diabetes Care", "type": "journal", "quartile": "Q1", "issn": "0149-5992" },
+    "citationCount": 96,
+    "isOpenAccess": false,
+    "isPreprint": false,
+    "fields": ["medicine"],
+    "country": ["Nigeria"],
+    "studyDesign": "rct",
+    "sampleSize": 620,
+    "followUpMonths": 6,
+    "url": "https://example.org/papers/p-009",
+    "provider": "mock"
+  },
+  {
+    "id": "p-010",
+    "externalIds": { "doi": "10.1000/implsci.2020.110" },
+    "title": "Barriers to integrating digital tools into clinical workflows: a qualitative synthesis",
+    "abstract": "Qualitative synthesis identifying interoperability, governance, and trust as the binding constraints on adoption.",
+    "authors": [
+      { "name": "Dubois, C.", "affiliation": "Sorbonne Université", "country": "France" }
+    ],
+    "year": 2020,
+    "date": "2020-10-09",
+    "venue": { "name": "Implementation Science", "type": "journal", "quartile": "Q1", "issn": "1748-5908" },
+    "citationCount": 277,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["public-health", "medicine"],
+    "country": ["France"],
+    "studyDesign": "review",
+    "url": "https://example.org/papers/p-010",
+    "provider": "mock"
+  },
+  {
+    "id": "p-011",
+    "externalIds": { "doi": "10.1000/npjdigmed.2025.111", "openalex": "W4300000011" },
+    "title": "Engagement decay in digital health apps: a meta-analysis of retention curves",
+    "abstract": "Meta-analysis quantifying the steep early drop-off in engagement across 88 consumer health apps.",
+    "authors": [
+      { "name": "Rossi, G.", "affiliation": "Politecnico di Milano", "country": "Italy" }
+    ],
+    "year": 2025,
+    "date": "2025-04-22",
+    "venue": { "name": "npj Digital Medicine", "type": "journal", "quartile": "Q1", "issn": "2398-6352" },
+    "citationCount": 41,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["computer-science", "psychology"],
+    "country": ["Italy"],
+    "studyDesign": "meta-analysis",
+    "sampleSize": 120000,
+    "followUpMonths": 12,
+    "url": "https://example.org/papers/p-011",
+    "provider": "mock"
+  },
+  {
+    "id": "p-012",
+    "externalIds": { "doi": "10.1000/jmir.2024.212" },
+    "title": "Voice-based screening for depression in primary care: diagnostic accuracy study",
+    "abstract": "Diagnostic accuracy study of a voice-biomarker screening tool deployed in primary care clinics.",
+    "authors": [
+      { "name": "Eriksen, P.", "affiliation": "University of Copenhagen", "country": "Denmark" }
+    ],
+    "year": 2024,
+    "date": "2024-08-30",
+    "venue": { "name": "Journal of Medical Internet Research", "type": "journal", "quartile": "Q1", "issn": "1438-8871" },
+    "citationCount": 27,
+    "isOpenAccess": true,
+    "isPreprint": false,
+    "fields": ["medicine", "psychology"],
+    "country": ["Denmark"],
+    "studyDesign": "observational",
+    "sampleSize": 1340,
+    "url": "https://example.org/papers/p-012",
+    "provider": "mock"
+  }
+]
