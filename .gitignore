@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Editor / OS
+.DS_Store
+.playwright-mcp/
+
+# Local Claude permission grants (machine-specific)
+.claude/settings.local.json
+
+# Logs
+*.log
+npm-debug.log*

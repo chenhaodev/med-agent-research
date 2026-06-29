@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Report — Corpus Synthesis</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F766E'/%3E%3Ccircle cx='12' cy='12' r='4.5' fill='none' stroke='%23FBFAF8' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="rr-root">
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="rr-header">
+    <div class="rr-header__inner">
+      <div class="rr-brand">
+        <div class="rr-brand__mark"><div class="rr-brand__dot"></div></div>
+        <span class="rr-brand__name">Corpus</span>
+        <span class="rr-tag">Beta</span>
+      </div>
+      <div class="rr-search" id="rr-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input id="rr-search-input" class="rr-search__input" type="search" placeholder="Ask a research question…" aria-label="Search the report">
+        <kbd class="rr-kbd">⏎</kbd>
+      </div>
+      <nav class="rr-nav" aria-label="Report actions">
+        <button id="rr-nav-refs" class="rr-ghost-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg><span>References</span></button>
+        <button id="rr-nav-export" class="rr-ghost-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"></path><path d="m6 11 6 6 6-6"></path><path d="M19 21H5"></path></svg><span>Export</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ BODY GRID ============ -->
+  <div class="rr-grid">
+
+    <!-- ---- TOC ---- -->
+    <aside class="rr-toc" id="rr-toc" aria-label="On this page">
+      <div class="rr-toc__label">On this page</div>
+      <a class="rr-toc-link" data-toc="sec-summary" href="#sec-summary">Summary</a>
+      <a class="rr-toc-link" data-toc="sec-intro" href="#sec-intro">1&nbsp;&nbsp;Introduction</a>
+      <a class="rr-toc-link" data-toc="sec-methods" href="#sec-methods">2&nbsp;&nbsp;Methods</a>
+      <a class="rr-toc-link" data-toc="sec-results" href="#sec-results">3&nbsp;&nbsp;Results</a>
+      <a class="rr-toc-link" data-toc="sec-discussion" href="#sec-discussion">4&nbsp;&nbsp;Discussion</a>
+      <a class="rr-toc-link" data-toc="sec-conclusion" href="#sec-conclusion">5&nbsp;&nbsp;Conclusion</a>
+      <div class="rr-corpus-card">
+        <div class="rr-corpus-card__label">Corpus</div>
+        <div class="rr-corpus-card__stat"><span class="rr-corpus-card__num">50</span><span class="rr-corpus-card__unit">papers synthesized</span></div>
+        <div class="rr-corpus-card__rule"></div>
+        <div class="rr-corpus-card__note">Generated from <strong>7.5M</strong> retrieved records.</div>
+      </div>
+    </aside>
+
+    <!-- ---- READING COLUMN ---- -->
+    <main class="rr-reading" id="rr-reading">
+
+      <!-- TITLE BLOCK -->
+      <div>
+        <div class="rr-kicker">
+          <span class="rr-kicker__accent">Synthesis Report</span><span>·</span><span>Generated Jun 2026</span><span>·</span><span>~6 min read</span>
+        </div>
+        <h1 class="rr-title">What does the current evidence say about <span class="rr-title__accent">[your research topic]</span>?</h1>
+        <div class="rr-chips">
+          <span class="rr-chip"><span class="rr-chip__dot"></span>Moderate-to-strong consensus</span>
+          <span class="rr-chip">17 contributing studies</span>
+          <span class="rr-chip">Updated weekly</span>
+        </div>
+      </div>
+
+      <!-- SUMMARY -->
+      <section id="sec-summary" class="rr-section" style="margin-bottom:0;">
+        <div class="rr-tldr">
+          <div class="rr-tldr__label">TL;DR</div>
+          <p class="rr-tldr__text">The literature points to <strong>three converging frontier directions</strong>, while the hardest open problems concentrate around <strong>long-term effect durability, equitable access, and integration into existing workflows</strong>. The clearest real-world traction so far appears in <strong>structured, repeatable tasks</strong> rather than open-ended judgement.</p>
+        </div>
+      </section>
+
+      <!-- 1. INTRODUCTION -->
+      <section id="sec-intro" class="rr-section">
+        <h2 class="rr-h2">1 &nbsp;Introduction</h2>
+        <p class="rr-body">Recent work in this field is shifting from early proof-of-concept demonstrations toward studies that ask <em>for whom</em>, <em>under what conditions</em>, and <em>at what cost</em> an intervention works. Research attention has visibly expanded into adaptive, data-driven decision-making and tighter coupling with the systems where the work actually happens<span class="rr-cite" data-title="Placeholder reference — a representative review establishing the framing of the field." data-meter="Yes">1</span>.</p>
+        <p class="rr-body">The evidence base, however, is uneven. Some outcomes are now supported by repeated randomized trials and meta-analyses, while others rest on a handful of small or short-horizon studies<span class="rr-cite" data-title="Placeholder reference — meta-analysis reporting mixed effect sizes across outcome types." data-meter="Possibly">2</span>. This report maps where the evidence is strong, where it is thin, and where the field is heading next.</p>
+      </section>
+
+      <!-- FIGURE 1: CONSENSUS METER -->
+      <figure class="rr-figure">
+        <div class="rr-card">
+          <div class="rr-meter__head">
+            <div class="rr-meter__q">Is this approach effective and scalable in practice?</div>
+            <span class="rr-meter__n">N = 17</span>
+          </div>
+          <div class="rr-meter__bar">
+            <div class="rr-meter__seg is-yes" style="width:23.5%;"><span>4</span></div>
+            <div class="rr-meter__seg is-possibly" style="width:41.2%;"><span>7</span></div>
+            <div class="rr-meter__seg is-mixed" style="width:35.3%;"><span>6</span></div>
+          </div>
+          <div class="rr-meter__legend">
+            <span class="rr-legend-item"><span class="rr-legend-item__sw is-yes"></span>Yes · effective</span>
+            <span class="rr-legend-item"><span class="rr-legend-item__sw is-possibly"></span>Possibly · conditional</span>
+            <span class="rr-legend-item"><span class="rr-legend-item__sw is-mixed"></span>Mixed</span>
+          </div>
+        </div>
+        <figcaption class="rr-figcap"><span class="rr-figcap__tag">Figure 1</span>Distribution of study conclusions across the included corpus.</figcaption>
+      </figure>
+
+      <!-- 2. METHODS -->
+      <section id="sec-methods" class="rr-section">
+        <h2 class="rr-h2">2 &nbsp;Methods</h2>
+        <p class="rr-body">A broad initial query was narrowed through automated relevance screening and de-duplication, then expanded across six sub-themes before a final relevance ranking selected the studies synthesized here.</p>
+        <div class="rr-funnel">
+          <div class="rr-funnel__step"><div class="rr-funnel__num">7.5M</div><div class="rr-funnel__label">Retrieved</div></div>
+          <div class="rr-funnel__arrow">→</div>
+          <div class="rr-funnel__step"><div class="rr-funnel__num">142k</div><div class="rr-funnel__label">Relevant</div></div>
+          <div class="rr-funnel__arrow">→</div>
+          <div class="rr-funnel__step"><div class="rr-funnel__num">131</div><div class="rr-funnel__label">Candidates</div></div>
+          <div class="rr-funnel__arrow">→</div>
+          <div class="rr-funnel__step is-final"><div class="rr-funnel__num">50</div><div class="rr-funnel__label">Included</div></div>
+        </div>
+        <figcaption class="rr-figcap"><span class="rr-figcap__tag">Figure 2</span>Search and screening funnel.</figcaption>
+      </section>
+
+      <!-- 3. RESULTS -->
+      <section id="sec-results" class="rr-section">
+        <h2 class="rr-h2">3 &nbsp;Results</h2>
+
+        <h3 class="rr-h3 rr-h3--tight">3.1&nbsp;&nbsp;Key papers</h3>
+        <p class="rr-body">The anchoring studies are large reviews and meta-analyses, chosen because they speak to both <em>what works</em> and <em>what is still missing</em>.</p>
+        <table class="rr-table">
+          <thead><tr><th class="rr-table__th" style="width:46%;">Paper</th><th class="rr-table__th is-last">Summary</th></tr></thead>
+          <tbody>
+            <tr><td class="rr-paper__cell"><div class="rr-paper"><span class="rr-num">7</span><div><div class="rr-paper__title">Placeholder title of a systematic review and meta-analysis</div><div class="rr-paper__meta">Author et al. · 2024 · Journal Name</div></div></div></td><td class="rr-paper__summary">Pooled estimates show a consistent moderate effect on the primary structured outcome, with wide heterogeneity by setting.</td></tr>
+            <tr><td class="rr-paper__cell"><div class="rr-paper"><span class="rr-num">5</span><div><div class="rr-paper__title">Placeholder title of an umbrella review</div><div class="rr-paper__meta">Author et al. · 2023 · Journal Name</div></div></div></td><td class="rr-paper__summary">Synthesizes prior reviews and flags durability and equity as the dominant unresolved questions.</td></tr>
+            <tr><td class="rr-paper__cell"><div class="rr-paper"><span class="rr-num">4</span><div><div class="rr-paper__title">Placeholder title of a large pragmatic trial</div><div class="rr-paper__meta">Author et al. · 2025 · Journal Name</div></div></div></td><td class="rr-paper__summary">Demonstrates feasibility at scale but reports declining engagement over the follow-up window.</td></tr>
+          </tbody>
+        </table>
+        <figcaption class="rr-figcap rr-figcap--tableflow"><span class="rr-figcap__tag">Figure 3</span>Anchor papers in the corpus.</figcaption>
+
+        <h3 class="rr-h3">3.2&nbsp;&nbsp;Frontier directions</h3>
+        <p class="rr-body">The first frontier is <strong>adaptive, individualized decision-making</strong>, where models adjust intervention timing and intensity from real-time context<span class="rr-cite" data-title="Placeholder reference — methods paper on adaptive intervention design." data-meter="Yes">3</span>. The second is <strong>privacy-preserving, on-device computation</strong>, which trades raw performance for data locality and trust<span class="rr-cite" data-title="Placeholder reference — study on edge / federated approaches under resource constraints." data-meter="Possibly">4</span>. The third is <strong>workflow augmentation</strong> — moving from a standalone tool toward something embedded in everyday practice, with measurable time savings reported<span class="rr-cite" data-title="Placeholder reference — evaluation reporting reduced task time and high acceptability." data-meter="Yes">5</span>.</p>
+
+        <h3 class="rr-h3">3.3&nbsp;&nbsp;Hot application areas</h3>
+        <div class="rr-scroll-x">
+        <table class="rr-table rr-table--wide">
+          <thead><tr><th class="rr-table__th">Direction</th><th class="rr-table__th">Typical outcomes</th><th class="rr-table__th">Evidence</th><th class="rr-table__th is-right">Papers</th></tr></thead>
+          <tbody>
+            <tr><td class="rr-table__td is-lead">Direction A</td><td class="rr-table__td">Primary metric, adherence, self-management</td><td class="rr-table__td"><span class="rr-evi"><span class="rr-evi__dot is-strong"></span>Strong</span></td><td class="rr-table__td is-num">14</td></tr>
+            <tr><td class="rr-table__td is-lead">Direction B</td><td class="rr-table__td">Symptom reduction, engagement</td><td class="rr-table__td"><span class="rr-evi"><span class="rr-evi__dot is-moderate"></span>Moderate</span></td><td class="rr-table__td is-num">9</td></tr>
+            <tr><td class="rr-table__td is-lead">Direction C</td><td class="rr-table__td">Access, follow-up completion</td><td class="rr-table__td"><span class="rr-evi"><span class="rr-evi__dot is-moderate"></span>Moderate</span></td><td class="rr-table__td is-num">7</td></tr>
+            <tr><td class="rr-table__td is-lead">Direction D</td><td class="rr-table__td">Workflow integration, productivity</td><td class="rr-table__td"><span class="rr-evi"><span class="rr-evi__dot is-emerging"></span>Emerging</span></td><td class="rr-table__td is-num">5</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <figcaption class="rr-figcap rr-figcap--tableflow"><span class="rr-figcap__tag">Figure 4</span>Popular deployment directions and their evidence signal.</figcaption>
+
+        <h3 class="rr-h3">3.4&nbsp;&nbsp;Research timeline</h3>
+        <p class="rr-body">Activity has accelerated markedly in recent years, with the largest and most-cited studies clustering toward the present.</p>
+        <figure class="rr-figure--chart">
+          <svg viewBox="0 0 700 260" style="width:100%;height:auto;display:block;" font-family="'IBM Plex Mono',monospace" role="img" aria-label="Scatter plot of publications over time, with larger markers for more-cited studies; density increases toward 2025.">
+            <line x1="80" y1="20" x2="80" y2="220" stroke="#EDEBE5" stroke-width="1" stroke-dasharray="3,5"></line>
+            <line x1="230" y1="20" x2="230" y2="220" stroke="#EDEBE5" stroke-width="1" stroke-dasharray="3,5"></line>
+            <line x1="380" y1="20" x2="380" y2="220" stroke="#EDEBE5" stroke-width="1" stroke-dasharray="3,5"></line>
+            <line x1="530" y1="20" x2="530" y2="220" stroke="#EDEBE5" stroke-width="1" stroke-dasharray="3,5"></line>
+            <line x1="680" y1="20" x2="680" y2="220" stroke="#EDEBE5" stroke-width="1" stroke-dasharray="3,5"></line>
+            <line x1="10" y1="220" x2="700" y2="220" stroke="#D8D5CD" stroke-width="1"></line>
+            <circle cx="20" cy="200" r="5" fill="var(--accent)" fill-opacity="0.5" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="80" cy="190" r="6" fill="var(--accent)" fill-opacity="0.5" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="170" cy="185" r="7" fill="var(--accent)" fill-opacity="0.55" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="230" cy="160" r="9" fill="var(--accent)" fill-opacity="0.55" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="290" cy="170" r="8" fill="var(--accent)" fill-opacity="0.6" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="350" cy="140" r="11" fill="var(--accent)" fill-opacity="0.6" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="410" cy="150" r="10" fill="var(--accent)" fill-opacity="0.65" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="470" cy="110" r="14" fill="var(--accent)" fill-opacity="0.7" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="530" cy="90" r="16" fill="var(--accent)" fill-opacity="0.75" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="560" cy="100" r="13" fill="var(--accent)" fill-opacity="0.7" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="590" cy="70" r="18" fill="var(--accent)" fill-opacity="0.8" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="620" cy="55" r="20" fill="var(--accent)" fill-opacity="0.85" stroke="#fff" stroke-width="1.5"></circle>
+            <circle cx="650" cy="80" r="15" fill="var(--accent)" fill-opacity="0.75" stroke="#fff" stroke-width="1.5"></circle>
+            <text x="80" y="238" fill="#9A9A93" font-size="11" text-anchor="middle">2005</text>
+            <text x="230" y="238" fill="#9A9A93" font-size="11" text-anchor="middle">2010</text>
+            <text x="380" y="238" fill="#9A9A93" font-size="11" text-anchor="middle">2015</text>
+            <text x="530" y="238" fill="#9A9A93" font-size="11" text-anchor="middle">2020</text>
+            <text x="680" y="238" fill="#9A9A93" font-size="11" text-anchor="middle">2025</text>
+          </svg>
+        </figure>
+        <figcaption class="rr-figcap rr-figcap--tableflow"><span class="rr-figcap__tag">Figure 5</span>Publications over time; larger markers indicate more citations.</figcaption>
+      </section>
+
+      <!-- 4. DISCUSSION -->
+      <section id="sec-discussion" class="rr-section">
+        <h2 class="rr-h2">4 &nbsp;Discussion</h2>
+        <p class="rr-body">The strongest results cluster around outcomes that are <strong>concrete, measurable, and trackable over short horizons</strong>. As tasks require more sustained behaviour change or deeper integration, the evidence thins and implementation difficulty rises<span class="rr-cite" data-title="Placeholder reference — discussion of the evidence-to-deployment gap." data-meter="Mixed">6</span>.</p>
+        <table class="rr-table">
+          <thead><tr><th class="rr-table__th" style="width:42%;">Claim</th><th class="rr-table__th">Strength</th><th class="rr-table__th is-last">Reasoning</th></tr></thead>
+          <tbody>
+            <tr><td class="rr-table__td is-claim">Effective for structured, repeatable tasks</td><td class="rr-table__td is-pillcell"><span class="rr-pill is-strong"><span class="rr-pill__dot"></span>Strong</span></td><td class="rr-table__td is-reason">Repeated across multiple meta-analyses with consistent direction.</td></tr>
+            <tr><td class="rr-table__td is-claim">Effects persist beyond 12 months</td><td class="rr-table__td is-pillcell"><span class="rr-pill is-moderate"><span class="rr-pill__dot"></span>Moderate</span></td><td class="rr-table__td is-reason">Few studies report long-term follow-up; signals weaken over time.</td></tr>
+            <tr><td class="rr-table__td is-claim">Benefits are equitably distributed</td><td class="rr-table__td is-pillcell"><span class="rr-pill is-weak"><span class="rr-pill__dot"></span>Weak</span></td><td class="rr-table__td is-reason">Access and adoption gaps appear at multiple stages.</td></tr>
+          </tbody>
+        </table>
+        <figcaption class="rr-figcap rr-figcap--tableflow"><span class="rr-figcap__tag">Figure 6</span>Key claims and the strength of their supporting evidence.</figcaption>
+      </section>
+
+      <!-- 5. CONCLUSION -->
+      <section id="sec-conclusion" class="rr-section">
+        <h2 class="rr-h2">5 &nbsp;Conclusion</h2>
+        <p class="rr-body">The frontier is clear, but success is decided less by the core method than by the <strong>implementation questions around it</strong> — durability, interoperability, trust, and equitable access. The most valuable near-term opportunities remain the high-frequency, standardized tasks that fit cleanly into existing workflows<span class="rr-cite" data-title="Placeholder reference — concluding synthesis on deployment priorities." data-meter="Yes">7</span>.</p>
+
+        <h3 class="rr-h3 rr-h3--tight">Research gaps</h3>
+        <div class="rr-scroll-x" style="margin:14px 0 8px;">
+        <table class="rr-table rr-table--heat">
+          <thead><tr><th class="rr-table__th">Topic</th><th class="rr-table__th is-center">Long-term</th><th class="rr-table__th is-center">Equity</th><th class="rr-table__th is-center" style="padding-right:0;">Integration</th></tr></thead>
+          <tbody>
+            <tr><td class="rr-heat-label"><div>Direction A</div></td><td class="rr-heat-cell"><div class="rr-heat is-high">HIGH</div></td><td class="rr-heat-cell"><div class="rr-heat is-med">MED</div></td><td class="rr-heat-cell is-last"><div class="rr-heat is-low">LOW</div></td></tr>
+            <tr><td class="rr-heat-label"><div>Direction B</div></td><td class="rr-heat-cell"><div class="rr-heat is-med">MED</div></td><td class="rr-heat-cell"><div class="rr-heat is-low">LOW</div></td><td class="rr-heat-cell is-last"><div class="rr-heat is-med">MED</div></td></tr>
+            <tr><td class="rr-heat-label"><div>Direction C</div></td><td class="rr-heat-cell"><div class="rr-heat is-low">LOW</div></td><td class="rr-heat-cell"><div class="rr-heat is-low">LOW</div></td><td class="rr-heat-cell is-last"><div class="rr-heat is-high">HIGH</div></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <figcaption class="rr-figcap rr-figcap--tableflow"><span class="rr-figcap__tag">Figure 7</span>Coverage heat-map; darker amber / coral indicates thinner evidence.</figcaption>
+
+        <h3 class="rr-h3 rr-h3--loose">Open research questions</h3>
+        <div class="rr-acc">
+          <div class="rr-acc__item">
+            <button class="rr-acc-btn" type="button">
+              <span class="rr-acc__q">How can long-term engagement be sustained without increasing user burden?</span>
+              <svg class="rr-acc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <div class="rr-acc-panel">Sustained retention directly bounds achievable effect sizes and the value of any adaptive model; current studies rarely follow users long enough to answer it.</div>
+          </div>
+          <div class="rr-acc__item">
+            <button class="rr-acc-btn" type="button">
+              <span class="rr-acc__q">Which subgroups are systematically under-served, and why?</span>
+              <svg class="rr-acc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <div class="rr-acc-panel">Access, adoption, and adherence gaps recur across the corpus, but disaggregated reporting is rare — making the mechanisms hard to target.</div>
+          </div>
+          <div class="rr-acc__item">
+            <button class="rr-acc-btn" type="button">
+              <span class="rr-acc__q">What does safe, governed integration into existing systems require?</span>
+              <svg class="rr-acc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </button>
+            <div class="rr-acc-panel">Interoperability standards, governance, and trust appear to be the binding constraint on turning efficacy into scaled, dependable service delivery.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REFERENCES -->
+      <section id="sec-references" class="rr-refs">
+        <div class="rr-refs__head">
+          <h2 class="rr-refs__title">References</h2>
+          <span class="rr-refs__count">50</span>
+        </div>
+        <div class="rr-refs__list">
+          <div class="rr-ref"><span class="rr-num">1</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, A., Author, B.</span> (2024). Placeholder title of a representative review. <em>Journal Name</em>, 12(3), 100–118.</div></div>
+          <div class="rr-ref"><span class="rr-num">2</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, C. et al.</span> (2023). Placeholder title of a meta-analysis on mixed effects. <em>Journal Name</em>, 9(1), 4–22.</div></div>
+          <div class="rr-ref"><span class="rr-num">3</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, D., Author, E.</span> (2025). Placeholder title on adaptive intervention design. <em>Journal Name</em>, 4(2), 55–71.</div></div>
+          <div class="rr-refs__more" id="rr-refs-more" hidden></div>
+          <button id="rr-refs-toggle" class="rr-ghost-btn" type="button" style="align-self:flex-start;margin-top:6px;background:#fff;border:1px solid var(--line);padding:0 14px;">
+            <span class="rr-refs-toggle__label">Show all 50 references</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

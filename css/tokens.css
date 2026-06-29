@@ -1,0 +1,52 @@
+/* ============================================================
+   Shared design tokens + base reset
+   Used by every page in the site (Research Report, Paper Search…).
+   ============================================================ */
+:root {
+  --accent: #0F766E;
+  --body-font: 'Newsreader', Georgia, serif;
+  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  --paper: #FBFAF8;
+  --surface: #fff;
+  --ink: #1A1A18;
+  --ink-soft: #27271F;
+  --text: #52524C;
+  --text-2: #6B6B66;
+  --faint: #9A9A93;
+  --placeholder: #A8A8A2;
+  --line: #E7E5DF;
+  --line-soft: #EDEBE5;
+  --axis: #D8D5CD;
+  --arrow: #C9C7BF;
+  --mono-bg: #F3F1EC;
+
+  /* Accent tints (chips, segmented controls, rail highlight) */
+  --accent-tint: #E3EEEA;
+  --accent-tint-border: #CFE3DD;
+  --accent-tint-hover: #D6E7E1;
+
+  /* Status colours */
+  --c-yes: #2FA98C;
+  --c-possibly: #E0A93B;
+  --c-mixed: #DB7B4B;
+  --c-yes-ink: #1B7A63;
+  --c-possibly-ink: #9A6A12;
+  --c-mixed-ink: #A6512A;
+}
+
+/* ---------- Base reset ---------- */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--paper); }
+::selection { background: rgba(15, 118, 110, .16); }
+
+/* ---------- Reduced motion (site-wide) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

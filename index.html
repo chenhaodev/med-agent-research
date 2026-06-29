@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Search — Corpus</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230F766E'/%3E%3Ccircle cx='12' cy='12' r='4.5' fill='none' stroke='%23FBFAF8' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/paper-search.css">
+</head>
+<body>
+
+<div id="ps-root">
+
+  <!-- ===== LEFT ICON RAIL ===== -->
+  <nav class="ps-rail" aria-label="Primary">
+    <div class="ps-rail__logo"><div class="ps-rail__logo-dot"></div></div>
+    <button class="ps-rail__btn is-active" type="button" title="New search" aria-label="New search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+    </button>
+    <button class="ps-rail__btn" type="button" title="Home" aria-label="Home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"></path></svg>
+    </button>
+    <button class="ps-rail__btn" type="button" title="Saved" aria-label="Saved">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+    </button>
+    <button class="ps-rail__btn" type="button" title="History" aria-label="History">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v5h5"></path><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path><path d="M12 7v5l4 2"></path></svg>
+    </button>
+    <button class="ps-rail__btn" type="button" title="Library" aria-label="Library">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><path d="M6 8.5v7"></path><path d="M18 8a6 6 0 0 1-6 6"></path><circle cx="18" cy="6" r="2.5"></circle></svg>
+    </button>
+    <div class="ps-rail__avatar" title="Account">R</div>
+  </nav>
+
+  <!-- ===== MAIN COLUMN ===== -->
+  <div class="ps-main">
+
+    <!-- top bar -->
+    <header class="ps-topbar">
+      <button class="ps-topbar__btn" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg>
+      </button>
+      <span class="ps-topbar__title">Search</span>
+    </header>
+
+    <!-- hero -->
+    <div class="ps-hero">
+      <h1 class="ps-hero__title">Paper search</h1>
+      <p class="ps-hero__sub">Find papers using phrases, keywords, title, or authors.</p>
+
+      <!-- search box -->
+      <div class="ps-searchbox" id="ps-searchbox" role="search">
+        <input id="ps-input" class="ps-searchbox__input" type="search" placeholder="Search for papers…" aria-label="Search for papers">
+        <button id="ps-filter-open" class="ps-filter-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="ps-drawer">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M7 12h10M11 18h2"></path></svg>
+          <span class="ps-filter-btn__label">Filter</span>
+          <span id="ps-filter-count" class="ps-filter-count" hidden></span>
+        </button>
+        <a class="ps-go ps-go--icon" href="report.html" title="Search" aria-label="Run search">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </a>
+      </div>
+
+      <!-- mode chips -->
+      <div class="ps-modes">
+        <button class="ps-chip" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6.5L5 18a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-8.5V3"></path></svg>Methods &amp; techniques</button>
+        <button class="ps-chip" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"></path></svg>Keyword search</button>
+        <button class="ps-chip" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>Author search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FILTER OVERLAY + DRAWER ===== -->
+  <div id="ps-overlay" class="ps-overlay"></div>
+  <aside id="ps-drawer" class="ps-drawer" role="dialog" aria-modal="true" aria-label="Filter" aria-hidden="true">
+
+    <!-- drawer header -->
+    <div class="ps-drawer__header">
+      <span class="ps-drawer__title">Filter</span>
+      <button id="ps-filter-close" class="ps-drawer__close" type="button" aria-label="Close filter">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- drawer body -->
+    <div class="ps-drawer__body">
+
+      <!-- GENERAL (open) -->
+      <div class="ps-group">
+        <button class="ps-acc ps-acc--general" type="button" aria-expanded="true">
+          <span class="ps-acc__title">General</span>
+          <svg class="ps-acc-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="ps-acc-panel">
+          <div class="ps-acc-body">
+            <!-- publish year -->
+            <div class="ps-field-label">Publish year</div>
+            <div class="ps-seg" aria-label="Publish year">
+              <button class="ps-seg-btn is-on" type="button">Any</button>
+              <button class="ps-seg-btn" type="button">Past 2 yrs.</button>
+              <button class="ps-seg-btn" type="button">Past 5 yrs.</button>
+              <button class="ps-seg-btn" type="button">Past 10 yrs.</button>
+            </div>
+            <div class="ps-range-row">
+              <input class="ps-input" placeholder="No min" aria-label="Minimum year">
+              <span class="ps-dash">—</span>
+              <input class="ps-input" value="2026" aria-label="Maximum year">
+            </div>
+
+            <!-- journal rank -->
+            <div class="ps-field-label ps-field-label--info">Journal rank
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B6B4AC" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+            </div>
+            <div class="ps-select-wrap">
+              <select class="ps-select" aria-label="Journal rank">
+                <option>Any (Q1–Q4)</option><option>Q1 only</option><option>Q1–Q2</option><option>Q1–Q3</option>
+              </select>
+              <svg class="ps-select-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </div>
+
+            <!-- citations -->
+            <div class="ps-field-label">Citations</div>
+            <div class="ps-citation-row">
+              <span class="ps-citation-row__hint">At least</span>
+              <input class="ps-citation-row__input" value="0" aria-label="Minimum citations">
+            </div>
+
+            <!-- toggles -->
+            <div class="ps-row ps-row--spaced">
+              <div class="ps-row__label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DB7B4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"></path><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"></path></svg>
+                <span class="ps-row__text">Exclude Preprints</span>
+              </div>
+              <button class="ps-toggle" type="button" aria-label="Exclude Preprints"><span class="ps-toggle__knob"></span></button>
+            </div>
+            <div class="ps-row">
+              <div class="ps-row__label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#52524C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0"></path></svg>
+                <span class="ps-row__text">Open access</span>
+              </div>
+              <button class="ps-toggle" type="button" aria-label="Open access"><span class="ps-toggle__knob"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- collapsible groups -->
+      <div class="ps-group">
+        <button class="ps-acc" type="button" aria-expanded="false">
+          <div><div class="ps-acc__title">Methodology</div><div class="ps-acc__sub">Study design, sample size, duration, and more</div></div>
+          <svg class="ps-acc-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="ps-acc-panel"><div class="ps-acc-text">Refine by study type (RCT, cohort, review), minimum sample size, and follow-up duration.</div></div>
+      </div>
+      <div class="ps-group">
+        <button class="ps-acc" type="button" aria-expanded="false">
+          <div><div class="ps-acc__title">Sources</div><div class="ps-acc__sub">Publishers</div></div>
+          <svg class="ps-acc-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="ps-acc-panel"><div class="ps-acc-text">Limit results to selected publishers and indexed databases.</div></div>
+      </div>
+      <div class="ps-group">
+        <button class="ps-acc" type="button" aria-expanded="false">
+          <div><div class="ps-acc__title">Fields of study</div><div class="ps-acc__sub">23 fields of study</div></div>
+          <svg class="ps-acc-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="ps-acc-panel">
+          <div class="ps-fos">
+            <span class="ps-tag">Medicine</span>
+            <span class="ps-tag">Computer Science</span>
+            <span class="ps-tag">Psychology</span>
+            <span class="ps-tag ps-tag--muted">+20 more</span>
+          </div>
+        </div>
+      </div>
+      <div class="ps-group ps-group--last">
+        <button class="ps-acc" type="button" aria-expanded="false">
+          <div><div class="ps-acc__title">Countries</div><div class="ps-acc__sub">236 countries</div></div>
+          <svg class="ps-acc-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A9A93" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="ps-acc-panel"><div class="ps-acc-text">Filter by the affiliation country of the study authors.</div></div>
+      </div>
+    </div>
+
+    <!-- drawer footer -->
+    <div class="ps-drawer__footer">
+      <button id="ps-filter-reset" class="ps-btn-reset" type="button">Reset</button>
+      <a class="ps-go ps-go--wide" href="report.html">Show results</a>
+    </div>
+  </aside>
+
+</div>
+
+<script src="js/paper-search.js"></script>
+</body>
+</html>
