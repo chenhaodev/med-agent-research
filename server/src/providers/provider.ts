@@ -32,6 +32,16 @@ export interface LiteratureProvider {
   fetch(ids: string[]): Promise<Paper[]>;
 }
 
+/* An enricher augments already-normalized papers with metadata no single search
+ * provider carries (e.g. SJR journal quartile by ISSN). The aggregator runs the
+ * active enrichers over the merged set before post-filtering, so a filter like
+ * journalRank can act on enriched values. Enrichers must be immutable: return a
+ * new Paper, never mutate the input. */
+export interface PaperEnricher {
+  readonly id: string;
+  enrich(papers: Paper[]): Promise<Paper[]>;
+}
+
 /* ---- Shared post-filtering applied by the aggregator after fan-out ---- */
 
 const QUARTILE_RANK: Record<string, number> = { Q1: 1, Q2: 2, Q3: 3, Q4: 4 };
