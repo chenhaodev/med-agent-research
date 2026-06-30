@@ -6,7 +6,8 @@ import type { FastifyReply } from 'fastify';
 import type { ReportEvent } from '../../api/types.ts';
 
 export interface SseChannel {
-  send(event: ReportEvent): void;
+  /** `id` becomes the SSE `id:` field, which the browser echoes as Last-Event-ID. */
+  send(event: ReportEvent, id?: number): void;
   comment(text: string): void;
   close(): void;
   readonly closed: boolean;
@@ -32,8 +33,9 @@ export function openSse(reply: FastifyReply): SseChannel {
     get closed() {
       return closed;
     },
-    send(event: ReportEvent) {
+    send(event: ReportEvent, id?: number) {
       if (closed) return;
+      if (id !== undefined) raw.write(`id: ${id}\n`);
       raw.write(`event: ${event.event}\n`);
       raw.write(`data: ${JSON.stringify(event.data)}\n\n`);
     },
