@@ -11,6 +11,15 @@ test-results/
 playwright-report/
 .playwright/
 
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
 # Editor / OS
 .DS_Store
 .playwright-mcp/

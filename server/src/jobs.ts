@@ -1,26 +1,22 @@
-/* Report generation runner. On POST /reports a run is started: it steps through
- * the SSE event sequence on a timer, applying each event to the stored report
- * (so a concurrent GET sees partial state) and broadcasting to subscribers.
- * Each run buffers its events so a late SSE subscriber replays from the start
- * then tails the rest. */
+/* Report generation jobs. POST /reports enqueues a job; the worker pool runs the
+ * generator (Brain or fixture), folding each event into the stored report and
+ * publishing it to the hub for SSE subscribers. Replaces the old in-memory timer:
+ * generation is now queued (bounded concurrency, retries) and delivery is via the
+ * pub/sub hub (multi-subscriber, Last-Event-ID reconnection). */
 
 import type { ReportEvent, SynthesisReport } from '../../api/types.ts';
 import { config } from './config.ts';
 import { store } from './store.ts';
+import { hub } from './hub.ts';
+import { queue } from './queue/registry.ts';
+import type { EnqueueResult, Job } from './queue/types.ts';
 import { buildReport } from './pipeline/report.ts';
 import { buildEventSequence } from './pipeline/stream.ts';
+import { runBrain } from './brain.ts';
+import { delay } from './sse.ts';
 import { nowIso } from './ids.ts';
 
-type Subscriber = (event: ReportEvent) => void;
-
-interface ReportRun {
-  reportId: string;
-  buffer: ReportEvent[];
-  done: boolean;
-  subscribers: Set<Subscriber>;
-}
-
-const runs = new Map<string, ReportRun>();
+const REPORT_JOB = 'report';
 
 /** Fold one event into the stored report, returning the updated copy. */
 function applyEvent(report: SynthesisReport, event: ReportEvent): SynthesisReport {
@@ -44,16 +40,44 @@ function applyEvent(report: SynthesisReport, event: ReportEvent): SynthesisRepor
   }
 }
 
-function emit(run: ReportRun, event: ReportEvent): void {
-  run.buffer.push(event);
-  const current = store.reports.get(run.reportId);
-  if (current) store.reports.set(run.reportId, applyEvent(current, event));
-  for (const sub of run.subscribers) sub(event);
+/** Apply to the stored report and publish to the hub. */
+function emit(reportId: string, event: ReportEvent): void {
+  const current = store.reports.get(reportId);
+  if (current) store.reports.set(reportId, applyEvent(current, event));
+  hub.publish(reportId, event);
 }
 
-/** Build the report, store a partial shell, and start streaming its events. */
-export function startReportRun(reportId: string, report: SynthesisReport): void {
-  const full = report;
+/** The worker: run generation for one report, emitting its event stream. */
+async function processReport(job: Job<{ reportId: string }>): Promise<void> {
+  const { reportId } = job.data;
+  const shell = store.reports.get(reportId);
+  if (!shell) throw new Error(`report ${reportId} not found`);
+
+  // The Brain (Python worker) and the fixture both speak the same event contract.
+  if (config.useBrain) {
+    await runBrain(reportId, shell.query, (event) => emit(reportId, event));
+    return;
+  }
+
+  const full = buildReport(reportId, shell.query);
+  full.version = shell.version;
+  full.cadence = shell.cadence;
+  for (const event of buildEventSequence(full)) {
+    if (config.streamStepMs > 0) await delay(config.streamStepMs);
+    emit(reportId, event);
+  }
+}
+
+let workerRegistered = false;
+/** Register the report worker on the queue. Idempotent; called once at startup. */
+export function registerReportWorker(): void {
+  if (workerRegistered) return;
+  workerRegistered = true;
+  queue.process(REPORT_JOB, processReport, config.queueConcurrency);
+}
+
+/** Store a queued shell and enqueue its generation job. */
+export function enqueueReport(reportId: string, full: SynthesisReport): EnqueueResult {
   const shell: SynthesisReport = {
     ...full,
     status: 'queued',
@@ -62,52 +86,37 @@ export function startReportRun(reportId: string, report: SynthesisReport): void 
     funnel: { stages: [] },
   };
   store.reports.set(reportId, shell);
-
-  const run: ReportRun = { reportId, buffer: [], done: false, subscribers: new Set() };
-  runs.set(reportId, run);
-
-  const sequence = buildEventSequence(full);
-  let i = 0;
-  const step = () => {
-    if (i >= sequence.length) {
-      run.done = true;
-      return;
-    }
-    emit(run, sequence[i++]);
-    setTimeout(step, config.streamStepMs);
-  };
-  setTimeout(step, config.streamStepMs);
+  hub.clear(reportId); // fresh event channel for this (re)compute
+  return queue.enqueue(REPORT_JOB, { reportId }, { jobId: `${reportId}:v${shell.version}` });
 }
 
-/** Subscribe to a run: replays buffered events, then tails live ones. Returns an
- *  unsubscribe fn. If the run is unknown (e.g. server restarted), rebuilds a
- *  one-shot sequence from the stored report so the stream still completes. */
+/** Re-run generation for an existing report at the next version (weekly recompute). */
+export function enqueueRecompute(reportId: string): EnqueueResult | null {
+  const existing = store.reports.get(reportId);
+  if (!existing) return null;
+  const next = buildReport(reportId, existing.query);
+  next.version = existing.version + 1;
+  next.cadence = existing.cadence;
+  return enqueueReport(reportId, next);
+}
+
+/** Subscribe to a report's event stream. Replays events after `lastEventId`,
+ *  then tails. If the run is unknown but a finished report is stored (e.g. after
+ *  a restart), replays a single terminal `done`. `onEvent` receives the event id
+ *  so the SSE writer can emit it for reconnection. */
 export function subscribeToRun(
   reportId: string,
-  onEvent: Subscriber,
+  onEvent: (event: ReportEvent, id: number) => void,
   onDone: () => void,
+  lastEventId = 0,
 ): () => void {
-  const run = runs.get(reportId);
-
-  if (!run) {
-    const stored = store.reports.get(reportId);
-    if (stored) {
-      for (const event of buildEventSequence(buildReport(reportId, stored.query))) onEvent(event);
-    }
-    onDone();
-    return () => {};
+  if (hub.has(reportId)) {
+    return hub.subscribe(reportId, lastEventId, (he) => onEvent(he.event, he.id), onDone);
   }
-
-  for (const event of run.buffer) onEvent(event);
-  if (run.done) {
-    onDone();
-    return () => {};
+  const stored = store.reports.get(reportId);
+  if (stored && stored.status === 'complete') {
+    onEvent({ event: 'done', data: { report: stored } }, lastEventId + 1);
   }
-
-  const wrapped: Subscriber = (event) => {
-    onEvent(event);
-    if (event.event === 'done' || event.event === 'error') onDone();
-  };
-  run.subscribers.add(wrapped);
-  return () => run.subscribers.delete(wrapped);
+  onDone();
+  return () => {};
 }

@@ -4,7 +4,7 @@ import { config } from '../config.ts';
 import { store } from '../store.ts';
 import { makeId } from '../ids.ts';
 import { buildReport } from '../pipeline/report.ts';
-import { startReportRun, subscribeToRun } from '../jobs.ts';
+import { enqueueReport, subscribeToRun } from '../jobs.ts';
 import { openSse } from '../sse.ts';
 import { badRequest, notFound, sendError } from '../errors.ts';
 
@@ -34,9 +34,8 @@ export async function reportsRoutes(app: FastifyInstance): Promise<void> {
       }
 
       const reportId = makeId('rep');
-      const jobId = makeId('job');
       const full = buildReport(reportId, query);
-      startReportRun(reportId, full);
+      const { jobId } = enqueueReport(reportId, full);
 
       store.jobs.set(jobId, { jobId, reportId, idempotencyKey });
       if (idempotencyKey) store.idempotency.set(idempotencyKey, reportId);
@@ -86,13 +85,21 @@ export async function reportsRoutes(app: FastifyInstance): Promise<void> {
     const channel = openSse(reply);
     const heartbeat = setInterval(() => channel.comment('ping'), 15000);
 
+    // On reconnect the browser sends the last id it saw; only missed events replay.
+    const header = req.headers['last-event-id'];
+    const fromQuery = (req.query as Record<string, unknown>)?.lastEventId;
+    const lastEventId = Number(
+      (Array.isArray(header) ? header[0] : header) ?? fromQuery ?? 0,
+    );
+
     const unsubscribe = subscribeToRun(
       req.params.id,
-      (event) => channel.send(event),
+      (event, id) => channel.send(event, id),
       () => {
         clearInterval(heartbeat);
         channel.close();
       },
+      Number.isFinite(lastEventId) ? lastEventId : 0,
     );
 
     req.raw.on('close', () => {

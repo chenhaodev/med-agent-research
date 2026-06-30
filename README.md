@@ -1,9 +1,9 @@
 # Corpus — research-synthesis assistant
 
-A Consensus/Elicit-style academic research assistant: a **Paper Search** landing page and a
+A Consensus/Elicit-style medical research assistant: a **Paper Search** landing page and a
 **Research Report** synthesis document (a PRISMA funnel + consensus meter + GRADE-style evidence
-grading + cited synthesis). The frontend is static; this repo also defines and mocks the backend
-interface behind it.
+grading + cited synthesis). A static frontend calls a versioned API; this repo defines the contract,
+a runnable mock backend, real literature providers, and a Claude-driven synthesis engine behind it.
 
 ## What's here
 
@@ -19,8 +19,9 @@ demo.html                       Thin harness over report-view.js (proves the mod
 
 api/types.ts                    The contract — single source of truth
 api/openapi.yaml                OpenAPI 3.1, mirrors types.ts
-server/                         Runnable mock backend (Fastify + TS, no DB)
-tests/                          Vitest unit tests + Playwright e2e
+server/                         Runnable mock backend (Fastify + TS, no DB): providers, queue, hub
+synthesis/                      The Brain — Python worker (screen→extract→grade→synthesize via Claude)
+tests/                          Vitest unit tests + Playwright e2e (frontend)
 docs/INTERFACE.md               Narrative: flows, SSE stream, error model, versioning, mapping
 ```
 
@@ -38,28 +39,38 @@ open http://localhost:8731/index.html      # type a question → report.html?rep
 open http://localhost:8731/demo.html        # or the auto-running demo harness
 ```
 
-The two pages now call the live API: **Paper Search** reads the drawer + searchbox into a
+The two pages call the live API: **Paper Search** reads the drawer + searchbox into a
 `ResearchQuery`, fills its filter catalogs from `GET /facets`, and on submit creates a report and
 navigates to `report.html?reportId=…`, which streams the body in over SSE. Opening `report.html`
 with no `reportId` shows a static sample as a graceful fallback. Point the pages at any backend by
 setting `window.CORPUS_API_BASE` (or `?api=…`).
 
 `curl` walkthrough and the full endpoint reference live in [`docs/INTERFACE.md`](docs/INTERFACE.md).
-Swap real literature sources in behind the mock (e.g. live PubMed via `USE_LIVE_PUBMED=1`) with no
-frontend change — see [`server/README.md`](server/README.md).
+Swap real literature sources in behind the mock (OpenAlex / Semantic Scholar / bioRxiv / live PubMed)
+with no frontend change — see [`server/README.md`](server/README.md).
+
+## The Brain (real synthesis)
+
+By default `/reports` returns a fixture. Set `USE_BRAIN=1` and the server routes report generation
+through the **synthesis worker** ([`synthesis/`](synthesis/README.md)) — a real
+**screen → extract → grade → synthesize** pipeline driven by Claude (Haiku screens, Sonnet extracts,
+Opus synthesizes) that emits the *same* SSE events, so the frontend is unchanged. Every claim is
+grounded to a `Reference`; a citation guardrail rejects ungrounded citations; an eval harness gates
+the build on grounding metrics. Runs fully offline with `CORPUS_BRAIN_STUB=1` (deterministic stub).
+
+Generation is queued (bounded worker pool, retries) and streamed over a pub/sub hub with
+`Last-Event-ID` reconnection — see [`server/README.md`](server/README.md) → Jobs & scale.
 
 ## Tests
 
-```bash
-npm install                 # frontend dev deps (Vitest, Playwright, jsdom)
-npm run test:unit           # Vitest + jsdom: readQuery() and every ContentBlock renderer
-npm run test:coverage       # same, with a coverage report
-npm run test:e2e:install    # one-time: download the Playwright browser
-npm run test:e2e            # Playwright: index → submit → report streams, zero console errors
-npm test                    # unit + e2e
-```
+Everything runs offline — no network or API key.
 
-The e2e harness starts the mock backend (:8787) and a static server (:8731) automatically.
+```bash
+npm install && npm test                         # frontend: Vitest+jsdom unit + Playwright e2e
+cd server && npm install && npm test            # server: providers, queue, hub, scheduler
+cd synthesis && python3 -m pytest               # brain: pipeline, guardrail, budget, eval
+cd synthesis && python3 eval_gate.py            # the Brain's release gate (grounding metrics)
+```
 
 ## Design in one line
 
