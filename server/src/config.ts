@@ -63,4 +63,9 @@ export const config = {
   schedulerTickMs: Number(process.env.SCHEDULER_TICK_MS ?? 60 * 60 * 1000),
   /** Opt in to the background recompute scheduler (off in tests/e2e). */
   enableScheduler: process.env.ENABLE_SCHEDULER === '1',
+
+  /** Durable store driver: 'memory' (default) or 'postgres'. */
+  dbDriver: process.env.DB_DRIVER === 'postgres' ? ('postgres' as const) : ('memory' as const),
+  /** Postgres connection string for the 'postgres' driver. */
+  databaseUrl: process.env.DATABASE_URL ?? 'postgres://localhost:5432/corpus',
 } as const;

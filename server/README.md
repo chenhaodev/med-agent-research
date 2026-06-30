@@ -36,6 +36,8 @@ Environment:
 | `REDIS_URL` | `redis://localhost:6379` | Redis connection for the `bullmq` driver |
 | `ENABLE_SCHEDULER` | unset | `1` runs the weekly recompute scheduler |
 | `WEEKLY_CADENCE_MS` | `604800000` | Recompute cadence for `cadence: weekly` reports |
+| `DB_DRIVER` | `memory` | Durable store: `memory` (in-process) or `postgres` |
+| `DATABASE_URL` | `postgres://localhost:5432/corpus` | Postgres connection for the `postgres` driver |
 
 ## Layout
 
@@ -43,7 +45,9 @@ Environment:
 src/
   index.ts            Fastify app + route registration + worker/scheduler startup
   config.ts           env-sourced config
-  store.ts            in-memory stores (reports, jobs, saved, history, collections)
+  store.ts            repository-backed stores (CachedRepo write-through cache)
+  repo/               Repository + KvStore + Memory/Postgres drivers + CachedRepo + migrate
+migrations/           SQL schema (JSONB per aggregate)
   jobs.ts             enqueue + worker: run generation (Brain or fixture), publish to hub
   hub.ts              per-report event log (monotonic ids) + Last-Event-ID replay pub/sub
   queue/              JobQueue contract + MemoryQueue (default) + BullMQ/Redis driver + registry
@@ -65,6 +69,24 @@ fixtures/
   sjr.json            ISSN -> SJR quartile sample (full Scimago CSV drops in here)
   http/               recorded API responses used by the provider tests
 tests/                vitest provider/enricher/aggregator tests (network-free)
+```
+
+## Persistence
+
+Data access goes through a **repository layer** (`repo/`), not raw Maps. Each
+aggregate is a `CachedRepo`: a fast in-memory cache (the synchronous API the
+routes use) write-through to a durable `Repository`. The default durable driver
+is in-memory (offline, tested); `DB_DRIVER=postgres` stores each aggregate as one
+JSONB row. Adding a driver = implement `Repository`/`KvStore` + a registry line.
+
+`store.init()` hydrates the caches at startup and seeds defaults. Report streaming
+partials are cache-only (ephemeral); the durable copy is written at create and at
+the terminal event. Each report carries `provenance` (corpus size + pinned model
+versions per `version`) for reproducibility.
+
+```bash
+DB_DRIVER=postgres DATABASE_URL=postgres://localhost:5432/corpus npm run migrate
+DB_DRIVER=postgres DATABASE_URL=postgres://localhost:5432/corpus npm run mock
 ```
 
 ## Jobs & scale

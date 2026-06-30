@@ -40,10 +40,19 @@ function applyEvent(report: SynthesisReport, event: ReportEvent): SynthesisRepor
   }
 }
 
-/** Apply to the stored report and publish to the hub. */
+/** Apply to the stored report and publish to the hub. Intermediate partials are
+ *  ephemeral (cache-only); the durable copy is written at the terminal event.
+ *  (The queued shell is persisted at enqueue time — see enqueueReport.) */
 function emit(reportId: string, event: ReportEvent): void {
   const current = store.reports.get(reportId);
-  if (current) store.reports.set(reportId, applyEvent(current, event));
+  if (current) {
+    const next = applyEvent(current, event);
+    if (event.event === 'done' || event.event === 'error') {
+      store.reports.set(reportId, next); // persist the final report
+    } else {
+      store.reports.cacheOnly(reportId, next); // ephemeral streaming partial
+    }
+  }
   hub.publish(reportId, event);
 }
 

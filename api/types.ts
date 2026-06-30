@@ -262,6 +262,21 @@ export type ContentBlock =
 export type ReportStatus = 'queued' | 'running' | 'complete' | 'error';
 export type ReportCadence = 'weekly' | 'manual';
 
+/** Reproducibility provenance: what was pinned for this `report.version` so the
+ *  report can be regenerated identically — corpus snapshot + model versions. */
+export interface Provenance {
+  /** When this version's inputs were pinned (ISO). */
+  pinnedAt: string;
+  /** Corpus size the report was synthesized from. */
+  corpusSize: number;
+  /** Retrieval sources used (provider ids), when known. */
+  sources?: string[];
+  /** Model id per pipeline tier (screen/extract/synthesize), when Brain-generated. */
+  models?: Record<string, string>;
+  /** Which generator produced the report: `fixture` or `brain`. */
+  generator: string;
+}
+
 export interface SynthesisReport {
   id: string;
   query: ResearchQuery;
@@ -277,6 +292,8 @@ export interface SynthesisReport {
   funnel: { stages: FunnelStage[] };
   blocks: ContentBlock[];
   references: Reference[];
+  /** Reproducibility provenance (pinned per version). */
+  provenance?: Provenance;
 }
 
 /* ----------------------------------------------------------------------------
