@@ -50,19 +50,17 @@
   <div class="demo-meta" id="demo-meta"></div>
 
   <div class="rr-grid">
-    <main class="rr-reading" id="rr-reading" style="grid-column:1 / -1;">
-      <div id="rr-title"></div>
-      <div id="rr-blocks"></div>
-      <section id="sec-references" class="rr-refs" hidden>
-        <div class="rr-refs__head"><h2 class="rr-refs__title">References</h2><span class="rr-refs__count" id="rr-refcount">0</span></div>
-        <div class="rr-refs__list" id="rr-refs-list"></div>
-      </section>
-    </main>
+    <main class="rr-reading" id="rr-reading" style="grid-column:1 / -1;"></main>
   </div>
 </div>
 
+<script src="js/config.js"></script>
 <script src="js/api.js"></script>
+<script src="js/report-view.js"></script>
 <script>
+/* Thin demo harness: a search box on top of the shared CorpusReportView.
+   All streaming + rendering + behaviors live in js/report-view.js — this page
+   only creates a report and mounts the view, proving the module is reusable. */
 (function () {
   'use strict';
   var params = new URLSearchParams(location.search);
@@ -74,11 +72,7 @@
     phase: document.getElementById('demo-phase'),
     fill: document.getElementById('demo-fill'),
     meta: document.getElementById('demo-meta'),
-    title: document.getElementById('rr-title'),
-    blocks: document.getElementById('rr-blocks'),
-    refs: document.getElementById('sec-references'),
-    refsList: document.getElementById('rr-refs-list'),
-    refCount: document.getElementById('rr-refcount')
+    reading: document.getElementById('rr-reading')
   };
 
   function setStatus(phase, progress) {
@@ -86,79 +80,32 @@
     els.fill.style.width = Math.round((progress || 0) * 100) + '%';
   }
 
-  function renderTitle(report) {
-    els.title.innerHTML =
-      '<div class="rr-kicker"><span class="rr-kicker__accent">Synthesis Report</span><span>·</span>' +
-      '<span>Generated ' + new Date(report.generatedAt).toLocaleDateString('en', { month: 'short', year: 'numeric' }) +
-      '</span><span>·</span><span>~' + report.readingTimeMin + ' min read</span></div>' +
-      '<h1 class="rr-title">What does the current evidence say about <span class="rr-title__accent">' +
-      report.topic + '</span>?</h1>' +
-      '<div class="rr-chips"><span class="rr-chip"><span class="rr-chip__dot"></span>' + report.consensus.label +
-      '</span><span class="rr-chip">' + report.metrics.contributingStudies + ' contributing studies</span>' +
-      (report.cadence === 'weekly' ? '<span class="rr-chip">Updated weekly</span>' : '') + '</div>';
-  }
-
-  function appendBlock(block) {
-    var html = CorpusRender.block(block);
-    if (!html) return; // unknown block type -> skipped, no crash
-    var wrap = document.createElement('div');
-    wrap.innerHTML = html;
-    while (wrap.firstChild) els.blocks.appendChild(wrap.firstChild);
-  }
-
-  function renderRefs(refs) {
-    els.refsList.innerHTML = refs.map(CorpusRender.reference).join('');
-    els.refCount.textContent = refs.length;
-    els.refs.hidden = false;
-    wireCitations();
-  }
-
-  /* Native-title hover for inline citation markers added during streaming. */
-  function wireCitations() {
-    [].slice.call(document.querySelectorAll('.rr-cite[data-title]')).forEach(function (c) {
-      if (!c.getAttribute('title')) {
-        c.setAttribute('title', (c.getAttribute('data-meter') || '') + ' — ' + c.getAttribute('data-title'));
-      }
-    });
-  }
-
   function generate() {
     els.go.disabled = true;
-    els.blocks.innerHTML = '';
-    els.title.innerHTML = '';
-    els.refs.hidden = true;
     setStatus('queued', 0.02);
-
     var query = { question: els.q.value.trim(), mode: 'keyword', filters: {} };
 
-    api.createReport(query)
-      .then(function (job) {
-        return api.getReport(job.reportId).then(function (shell) {
-          renderTitle(shell);
-          return job.reportId;
-        });
-      })
-      .then(function (reportId) {
-        api.streamReport(reportId, {
-          status: function (d) { setStatus(d.phase, d.progress); },
-          block: function (d) { appendBlock(d.block); wireCitations(); },
-          references: function (d) { renderRefs(d.added); },
-          done: function (d) {
-            setStatus('complete', 1);
-            els.go.disabled = false;
-            els.meta.textContent = 'reportId ' + d.report.id + ' · ' + d.report.blocks.length +
-              ' blocks · ' + d.report.references.length + ' references · corpus ' + d.report.metrics.corpusSize;
-          },
-          error: function (e) {
-            setStatus('error: ' + (e.message || e.code), 1);
-            els.go.disabled = false;
-          }
-        });
-      })
-      .catch(function (e) {
-        setStatus('error: ' + e.message, 1);
-        els.go.disabled = false;
+    api.createReport(query).then(function (job) {
+      CorpusReportView.mount({
+        api: api,
+        reportId: job.reportId,
+        root: els.reading,
+        onStatus: function (d) { setStatus(d.phase, d.progress); },
+        onDone: function (report) {
+          setStatus('complete', 1);
+          els.go.disabled = false;
+          els.meta.textContent = 'reportId ' + report.id + ' · ' + report.blocks.length +
+            ' blocks · ' + report.references.length + ' references · corpus ' + report.metrics.corpusSize;
+        },
+        onError: function (e) {
+          setStatus('error: ' + (e.message || e.code), 1);
+          els.go.disabled = false;
+        }
       });
+    }).catch(function (e) {
+      setStatus('error: ' + e.message, 1);
+      els.go.disabled = false;
+    });
   }
 
   els.go.addEventListener('click', generate);

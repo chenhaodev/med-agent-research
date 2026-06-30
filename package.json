@@ -1,0 +1,22 @@
+{
+  "name": "corpus-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Corpus research-synthesis frontend — static pages wired to the /api/v1 contract",
+  "scripts": {
+    "serve": "python3 -m http.server 8731",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^25.0.1",
+    "vitest": "^2.1.8"
+  }
+}
