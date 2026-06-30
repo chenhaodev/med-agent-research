@@ -13,7 +13,7 @@ npm install
 npm run mock          # http://localhost:8787/api/v1   (default port 8787)
 npm run dev           # same, with watch-reload
 npm run typecheck     # tsc --noEmit
-npm test              # vitest — queue / hub / scheduler unit tests
+npm test              # vitest — providers, queue, hub, scheduler (network-free)
 ```
 
 Environment:
@@ -22,8 +22,12 @@ Environment:
 |---|---|---|
 | `PORT` | `8787` | Listen port |
 | `STREAM_STEP_MS` | `220` | Delay between SSE events (fixture path; lower = faster) |
-| `USE_LIVE_PUBMED` | unset | `1` routes `/papers` through the real NCBI E-utilities adapter |
+| `CORPUS_PROVIDERS` | unset | Active search providers, e.g. `openalex,semantic-scholar,biorxiv` |
+| `CORPUS_ENRICHERS` | unset | Active enrichers, e.g. `sjr` |
+| `USE_LIVE_PUBMED` | unset | `1` routes `/papers` through the real NCBI E-utilities adapter (when `CORPUS_PROVIDERS` is empty) |
 | `NCBI_API_KEY` | unset | Optional PubMed API key (higher rate limit) |
+| `OPENALEX_MAILTO` | `corpus@example.com` | Contact for the OpenAlex polite pool |
+| `S2_API_KEY` | unset | Optional Semantic Scholar API key (higher rate limit) |
 | `MOCK_TOKEN` | `mock-token-corpus` | The static bearer token the mock issues/accepts |
 | `USE_BRAIN` | unset | `1` generates reports via the Python synthesis worker (see [`../synthesis`](../synthesis/README.md)) |
 | `QUEUE_DRIVER` | `memory` | Job queue driver: `memory` (in-process) or `bullmq` (Redis) |
@@ -50,12 +54,17 @@ src/
   errors.ts           ApiException + JSON error envelope
   fixtures.ts         loads fixtures/*.json
   routes/             one module per resource
-  providers/          LiteratureProvider contract + Mock / PubMed / Aggregator
+  providers/          LiteratureProvider contract, Aggregator, registry, cursor
+    mock.ts pubmed.ts openalex.ts semanticScholar.ts biorxiv.ts
+    enrichers/sjr.ts  PaperEnricher: SJR journal quartile by ISSN
   pipeline/           report template (from report.html) + references + stream
 tests/                vitest: queue (concurrency/retry/dedup), hub (replay), scheduler
 fixtures/
   facets.json         23 fields, 236 countries, ranks, sources, designs, modes
   papers.json         12 normalized sample papers
+  sjr.json            ISSN -> SJR quartile sample (full Scimago CSV drops in here)
+  http/               recorded API responses used by the provider tests
+tests/                vitest provider/enricher/aggregator tests (network-free)
 ```
 
 ## Jobs & scale
@@ -80,7 +89,30 @@ it would be user-scoped like the rest. Get a token with `POST /auth/login`
 
 ## Providers
 
-`Aggregator` fans out across the active providers, dedups by DOI, enriches, and
-applies shared post-filters. With `USE_LIVE_PUBMED=1` it uses `PubMedProvider`
-(real esearch/efetch); otherwise `MockProvider` serves the fixtures. Adding a
-source = implement `LiteratureProvider` and register it in `aggregator.ts`.
+`Aggregator` fans out across the active providers in parallel, dedups by DOI,
+runs enrichers, and applies shared post-filters. A failing provider is isolated
+(`Promise.allSettled`) so one bad source can't sink a search.
+
+| Provider | id | Strengths |
+|---|---|---|
+| OpenAlex | `openalex` | citations, open-access, topics→fields, author country, ISSN |
+| Semantic Scholar | `semantic-scholar` | citations, fields, publication-type→study design |
+| bioRxiv / medRxiv | `biorxiv` / `medrxiv` | preprints (date-window + local keyword filter) |
+| PubMed | `pubmed` | MeSH-aware term building (real esearch/efetch) |
+| Mock | `mock` | bundled fixtures (default, offline) |
+
+Enrichers augment the merged set: `sjr` fills `venue.quartile` by ISSN (so the
+`journalRank` filter works across providers that don't carry a quartile).
+
+**Selecting sources** — `CORPUS_PROVIDERS=openalex,semantic-scholar,biorxiv`
+and `CORPUS_ENRICHERS=sjr`. With no `CORPUS_PROVIDERS`, it falls back to live
+PubMed (if `USE_LIVE_PUBMED=1`) or the mock fixtures.
+
+**Pagination** — each provider keeps its own native cursor (OpenAlex token,
+S2/PubMed offset, bioRxiv window offset); the aggregator bundles them into one
+opaque **composite cursor** the client round-trips. Exhausted providers drop out;
+an empty bundle means no next page.
+
+Adding a source = implement `LiteratureProvider` (or `PaperEnricher`) and add one
+line to `providers/registry.ts`. Provider tests run against recorded HTTP
+fixtures (`fixtures/http/`), so CI never touches the live network.

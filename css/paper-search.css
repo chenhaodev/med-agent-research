@@ -243,11 +243,18 @@ html, body { height: 100%; }
 }
 .ps-toggle.is-on .ps-toggle__knob { transform: translateX(18px); }
 
-.ps-fos { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 20px; }
+.ps-fos { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 20px; max-height: 220px; overflow-y: auto; }
 .ps-tag {
   height: 30px; display: inline-flex; align-items: center; padding: 0 12px;
-  background: var(--mono-bg); border-radius: 8px; font: 500 12.5px var(--sans); color: var(--text);
+  background: var(--mono-bg); border: 1px solid transparent; border-radius: 8px;
+  font: 500 12.5px var(--sans); color: var(--text); cursor: pointer; transition: background .12s, color .12s;
 }
+button.ps-tag { font-family: var(--sans); }
+.ps-tag:hover { background: var(--line); }
+.ps-tag.is-on {
+  background: var(--accent-tint); color: var(--accent); border-color: var(--accent-tint-border); font-weight: 600;
+}
+.ps-tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .ps-tag--muted { color: var(--faint); }
 
 /* Drawer footer */

@@ -9,13 +9,23 @@
 (function (global) {
   'use strict';
 
-  var DEFAULT_BASE = 'http://localhost:8787/api/v1';
+  var FALLBACK_BASE = 'http://localhost:8787/api/v1';
+
+  /* Resolve the API base at call time: explicit option > window.CORPUS_API_BASE
+     (set by js/config.js) > hard fallback. Keeps the base in one place. */
+  function resolveBase(explicit) {
+    if (explicit) return explicit;
+    if (typeof global.CORPUS_API_BASE === 'string' && global.CORPUS_API_BASE) {
+      return global.CORPUS_API_BASE;
+    }
+    return FALLBACK_BASE;
+  }
 
   /* ----------------------------- HTTP client ----------------------------- */
 
   function CorpusApi(options) {
     options = options || {};
-    this.baseUrl = options.baseUrl || DEFAULT_BASE;
+    this.baseUrl = resolveBase(options.baseUrl);
     this.token = options.token || null;
   }
 

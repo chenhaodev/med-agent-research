@@ -254,15 +254,15 @@
       <section id="sec-references" class="rr-refs">
         <div class="rr-refs__head">
           <h2 class="rr-refs__title">References</h2>
-          <span class="rr-refs__count">50</span>
+          <span class="rr-refs__count">3</span>
         </div>
+        <!-- Static fallback sample. When opened with ?reportId=…, js/report-view.js
+             replaces this whole reading column with the live, streamed report and
+             its real reference list. -->
         <div class="rr-refs__list">
           <div class="rr-ref"><span class="rr-num">1</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, A., Author, B.</span> (2024). Placeholder title of a representative review. <em>Journal Name</em>, 12(3), 100–118.</div></div>
           <div class="rr-ref"><span class="rr-num">2</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, C. et al.</span> (2023). Placeholder title of a meta-analysis on mixed effects. <em>Journal Name</em>, 9(1), 4–22.</div></div>
           <div class="rr-ref"><span class="rr-num">3</span><div class="rr-ref__text"><span class="rr-ref__authors">Author, D., Author, E.</span> (2025). Placeholder title on adaptive intervention design. <em>Journal Name</em>, 4(2), 55–71.</div></div>
-          <div class="rr-refs__more" id="rr-refs-more" hidden></div>
-          <button id="rr-refs-toggle" class="rr-ghost-btn" type="button" style="align-self:flex-start;margin-top:6px;background:#fff;border:1px solid var(--line);padding:0 14px;">
-            <span class="rr-refs-toggle__label">Show all 50 references</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
         </div>
       </section>
 
@@ -270,6 +270,9 @@
   </div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/report-view.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

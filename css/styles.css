@@ -353,6 +353,23 @@
   border-radius: 3px; transition: background .4s, box-shadow .4s;
 }
 
+/* ---------- Streaming status (shown while a report streams in) ---------- */
+.rrv-status {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 22px;
+  font: 12px var(--mono); color: var(--faint);
+}
+.rrv-status[hidden] { display: none; }
+.rrv-status__phase { flex-shrink: 0; text-transform: lowercase; letter-spacing: .02em; }
+.rrv-status__bar { flex: 1; height: 5px; background: var(--line-soft, #EDEBE5); border-radius: 4px; overflow: hidden; }
+.rrv-status__fill { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+.rrv-status.is-error .rrv-status__phase { color: var(--c-mixed, #DB7B4B); }
+
+/* "Show all N references" toggle (built by js/report-view.js) */
+.rr-refs-toggle {
+  align-self: flex-start; margin-top: 6px;
+  background: var(--surface, #fff); border: 1px solid var(--line); padding: 0 14px;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .rr-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
