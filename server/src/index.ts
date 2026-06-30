@@ -12,6 +12,8 @@ import { savedSearchesRoutes } from './routes/savedSearches.ts';
 import { historyRoutes } from './routes/history.ts';
 import { collectionsRoutes } from './routes/collections.ts';
 import { authRoutes } from './routes/auth.ts';
+import { registerReportWorker } from './jobs.ts';
+import { scheduler } from './scheduler.ts';
 import type { ApiErrorResponse } from '../../api/types.ts';
 
 async function main(): Promise<void> {
@@ -46,6 +48,10 @@ async function main(): Promise<void> {
   for (const route of routes) {
     await app.register(route, { prefix: config.basePath });
   }
+
+  // Start the report worker pool, and (opt-in) the weekly recompute scheduler.
+  registerReportWorker();
+  if (config.enableScheduler) scheduler.start();
 
   try {
     await app.listen({ port: config.port, host: config.host });

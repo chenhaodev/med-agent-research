@@ -34,4 +34,20 @@ export const config = {
   brainCandidates: Number(process.env.BRAIN_CANDIDATES ?? 40),
   /** Per-report token budget passed to the worker (0 / unset = unbounded). */
   brainMaxTokens: Number(process.env.CORPUS_BRAIN_MAX_TOKENS ?? 0) || undefined,
+
+  /** Job queue driver: 'memory' (default, in-process) or 'bullmq' (Redis). */
+  queueDriver: process.env.QUEUE_DRIVER === 'bullmq' ? ('bullmq' as const) : ('memory' as const),
+  /** Concurrent report-generation jobs the worker pool runs. */
+  queueConcurrency: Number(process.env.QUEUE_CONCURRENCY ?? 4),
+  /** Total attempts per job before it is marked failed. */
+  queueDefaultMaxAttempts: Number(process.env.QUEUE_MAX_ATTEMPTS ?? 3),
+  /** Redis connection for the bullmq driver. */
+  redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
+
+  /** Recompute cadence for `cadence: weekly` reports (default 7 days). */
+  weeklyCadenceMs: Number(process.env.WEEKLY_CADENCE_MS ?? 7 * 24 * 60 * 60 * 1000),
+  /** How often the scheduler checks for due recomputes. */
+  schedulerTickMs: Number(process.env.SCHEDULER_TICK_MS ?? 60 * 60 * 1000),
+  /** Opt in to the background recompute scheduler (off in tests/e2e). */
+  enableScheduler: process.env.ENABLE_SCHEDULER === '1',
 } as const;
