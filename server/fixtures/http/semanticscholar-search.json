@@ -1,0 +1,41 @@
+{
+  "total": 15842,
+  "offset": 0,
+  "next": 2,
+  "data": [
+    {
+      "paperId": "5f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
+      "externalIds": { "DOI": "10.2196/jmir.1923", "PubMed": "22209829", "CorpusId": 2072181779 },
+      "title": "What is e-health: a systematic review of published definitions",
+      "abstract": "Background: The term e-health is widely used, yet definitions vary. This systematic review identifies and analyzes published definitions of e-health to characterize the concept.",
+      "year": 2011,
+      "citationCount": 2025,
+      "venue": "Journal of Medical Internet Research",
+      "journal": { "name": "Journal of Medical Internet Research", "volume": "13", "pages": "e126" },
+      "publicationTypes": ["JournalArticle", "Review"],
+      "openAccessPdf": { "url": "https://www.jmir.org/2011/4/e126/PDF", "status": "GOLD" },
+      "fieldsOfStudy": ["Medicine", "Computer Science"],
+      "authors": [
+        { "authorId": "1700325", "name": "Hans Oh" },
+        { "authorId": "2055912", "name": "Carlos Rizo" }
+      ]
+    },
+    {
+      "paperId": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+      "externalIds": { "DOI": "10.1101/2024.01.02.573456", "ArXiv": null, "CorpusId": 998877 },
+      "title": "A randomized controlled trial of a mobile health intervention for blood pressure",
+      "abstract": "We report a randomized controlled trial evaluating a smartphone-based intervention for hypertension self-management across 12 months of follow-up.",
+      "year": 2024,
+      "citationCount": 7,
+      "venue": "medRxiv",
+      "journal": { "name": "medRxiv" },
+      "publicationTypes": ["JournalArticle", "ClinicalTrial"],
+      "openAccessPdf": { "url": "https://www.medrxiv.org/content/10.1101/2024.01.02.573456.full.pdf", "status": "GREEN" },
+      "fieldsOfStudy": ["Medicine"],
+      "authors": [
+        { "authorId": "3001", "name": "Jane Doe" },
+        { "authorId": "3002", "name": "John Smith" }
+      ]
+    }
+  ]
+}

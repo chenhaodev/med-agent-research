@@ -1,0 +1,20 @@
+{
+  "_comment": "ISSN -> SCImago Journal Rank quartile. A representative sample; the full Scimago dataset (downloadable CSV) drops in here unchanged. Used by the SJR enricher to fill venue.quartile by ISSN.",
+  "quartiles": {
+    "1438-8871": "Q1",
+    "1439-4456": "Q1",
+    "0028-4793": "Q1",
+    "0140-6736": "Q1",
+    "1549-1676": "Q1",
+    "2044-6055": "Q1",
+    "0959-8138": "Q1",
+    "1932-6203": "Q2",
+    "2398-6352": "Q1",
+    "1546-1718": "Q1",
+    "0098-7484": "Q1",
+    "2168-6114": "Q1",
+    "1078-8956": "Q1",
+    "0036-8075": "Q1",
+    "1095-9203": "Q1"
+  }
+}

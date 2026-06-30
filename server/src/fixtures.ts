@@ -15,3 +15,7 @@ function load<T>(name: string): T {
 
 export const facetsFixture: Facets = load<Facets>('facets.json');
 export const papersFixture: Paper[] = load<Paper[]>('papers.json');
+
+/** ISSN -> SJR quartile lookup for the SJR enricher. */
+export const sjrFixture: Record<string, string> =
+  load<{ quartiles: Record<string, string> }>('sjr.json').quartiles;
