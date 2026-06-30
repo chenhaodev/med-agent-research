@@ -5,6 +5,12 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+.playwright/
+
 # Editor / OS
 .DS_Store
 .playwright-mcp/
