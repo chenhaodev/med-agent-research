@@ -9,6 +9,7 @@ import { config } from './config.ts';
 import { store } from './store.ts';
 import { buildReport } from './pipeline/report.ts';
 import { buildEventSequence } from './pipeline/stream.ts';
+import { runBrain } from './brain.ts';
 import { nowIso } from './ids.ts';
 
 type Subscriber = (event: ReportEvent) => void;
@@ -65,6 +66,21 @@ export function startReportRun(reportId: string, report: SynthesisReport): void 
 
   const run: ReportRun = { reportId, buffer: [], done: false, subscribers: new Set() };
   runs.set(reportId, run);
+
+  // The Brain (Python worker) and the fixture both speak the same event contract.
+  if (config.useBrain) {
+    void runBrain(reportId, full.query, (event) => {
+      emit(run, event);
+      if (event.event === 'done' || event.event === 'error') run.done = true;
+    }).catch((err: unknown) => {
+      emit(run, {
+        event: 'error',
+        data: { code: 'brain_failed', message: err instanceof Error ? err.message : String(err) },
+      });
+      run.done = true;
+    });
+    return;
+  }
 
   const sequence = buildEventSequence(full);
   let i = 0;

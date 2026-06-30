@@ -1,0 +1,17 @@
+[project]
+name = "corpus-brain"
+version = "0.1.0"
+description = "Corpus synthesis brain — research-synthesis engine speaking the /api/v1 event contract"
+requires-python = ">=3.10"
+dependencies = [
+  # The real Claude backend; optional at runtime (the stub needs nothing).
+  "anthropic>=0.49",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,6 @@
+# Runtime: only needed for the real Claude backend. The offline stub backend
+# (tests, CI, no-key dev) has zero third-party dependencies.
+anthropic>=0.49
+
+# Dev / test
+pytest>=8
