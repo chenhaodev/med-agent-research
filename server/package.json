@@ -7,6 +7,7 @@
   "scripts": {
     "mock": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
+    "migrate": "tsx src/repo/migrate.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

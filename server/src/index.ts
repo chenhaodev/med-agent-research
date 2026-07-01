@@ -14,9 +14,13 @@ import { collectionsRoutes } from './routes/collections.ts';
 import { authRoutes } from './routes/auth.ts';
 import { registerReportWorker } from './jobs.ts';
 import { scheduler } from './scheduler.ts';
+import { store } from './store.ts';
 import type { ApiErrorResponse } from '../../api/types.ts';
 
 async function main(): Promise<void> {
+  // Hydrate the durable store (and seed defaults) before serving any request.
+  await store.init();
+
   const app = Fastify({ logger: true });
 
   await app.register(cors, { origin: true, exposedHeaders: ['*'] });

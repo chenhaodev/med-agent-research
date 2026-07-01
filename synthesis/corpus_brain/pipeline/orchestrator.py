@@ -12,10 +12,25 @@ from typing import Any, Iterator
 from .. import contract
 from ..budget import Budget, BudgetExceeded
 from ..llm import LLMClient
+from ..llm.base import DEFAULT_MODELS, ModelTier
 from . import extract as extract_stage
 from . import grade as grade_stage
 from . import screen as screen_stage
 from . import synthesize as synth_stage
+
+
+def _provenance(job: dict[str, Any], corpus_size: int, ts: str, llm: LLMClient) -> dict[str, Any]:
+    """Pin corpus + model versions so the report can be reproduced at this version."""
+    papers = job.get("papers") or []
+    sources = sorted({p.get("provider") for p in papers if p.get("provider")})
+    return {
+        "pinnedAt": ts,
+        "corpusSize": corpus_size,
+        "sources": sources,
+        "models": {tier.value: DEFAULT_MODELS[tier] for tier in ModelTier},
+        "generator": "brain",
+        "backend": type(llm).__name__,
+    }
 
 
 def _now_iso(job: dict[str, Any]) -> str:
@@ -74,6 +89,7 @@ def run_report(job: dict[str, Any], llm: LLMClient, budget: Budget) -> Iterator[
             "funnel": {"stages": screened.funnel_stages},
             "blocks": blocks,
             "references": references,
+            "provenance": _provenance(job, corpus_size, ts, llm),
             "diagnostics": {"budget": budget.summary(), "grounding": grounding},
         }
         yield contract.done(report)

@@ -296,5 +296,6 @@ export function buildReport(id: string, query: ResearchQuery): SynthesisReport {
     funnel: { stages: FUNNEL_STAGES },
     blocks: buildBlocks(),
     references: buildReferences(50),
+    provenance: { pinnedAt: ts, corpusSize: 50, sources: ['fixture'], generator: 'fixture' },
   };
 }
